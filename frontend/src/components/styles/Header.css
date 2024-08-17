@@ -1,0 +1,201 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 70px 0 20px; /* top 0px | right 10px | bottom 0px | left 20px */
+  background-color: #ffffff;
+  color: #000000;
+  font-family: "Kanit";
+  position: relative;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.navbar {
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar ul li {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+  padding: 10px 20px;
+}
+
+.user-options, .wishlist-icon, .carrito-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px; /* Tamaño uniforme para todos los íconos */
+  width: 40px;  /* Tamaño uniforme para todos los íconos */
+  min-width: 40px;  /* Asegura que el contenedor no colapse */
+  min-height: 40px; /* Asegura que el contenedor no colapse */
+  cursor: pointer;
+}
+
+.user-options img, .wishlist-icon img, .carrito-icon img {
+  height: 100%; /* Ajusta la altura de la imagen al contenedor */
+  width: 100%;  /* Ajusta el ancho de la imagen al contenedor */
+  object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
+  padding: 5px;
+} 
+
+.user-options {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}
+
+.icons-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Reduce el espacio entre los íconos */
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 400px;
+  height: 40px;
+}
+
+.search-bar input {
+  padding-right: 40px;
+  width: 100%;
+  height: 100%;
+  font-family: "Kanit";
+}
+
+.search-bar .search-icon {
+  position: absolute;
+  right: 10px;
+  color: #000000;
+  font-size: 20px;
+}
+
+.dropdown-user {
+  display: block;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  font-family: "Kanit";
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.dropdown-user ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-user ul li {
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-user ul li button,
+.dropdown-user ul li a {
+  color: #000000;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  padding: 10px 20px;
+  font-family: "Kanit";
+}
+
+.dropdown-products {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  font-family: "Kanit";
+  width: auto;
+}
+
+.dropdown-products ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-products ul li {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.dropdown-products ul li a {
+  color: #000000;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  display: block;
+  padding: 10px 20px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.dropdown-products ul li a:hover {
+  color: #ffffff;
+  background-color: #000000;
+  border-radius: 0;
+}
+
+.dropdown-user ul li a, 
+.dropdown-user ul li button {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  color: #000000;
+  background-color: #ffffff;
+  text-decoration: none;
+  text-align: left;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.dropdown-user ul li a:hover, 
+.dropdown-user ul li button:hover {
+  color: #ffffff;
+  background-color: #000000;
+}

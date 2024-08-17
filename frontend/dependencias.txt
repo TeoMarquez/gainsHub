@@ -1,0 +1,5 @@
+npm install react-router-dom
+npm install react
+npm install express mysql2
+npm install @tremor/react
+npm install @remixicon/react
