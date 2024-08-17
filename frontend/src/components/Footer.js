@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Importa el componente Link
 import './styles/Footer.css';
 
 const Footer = () => {
@@ -33,6 +34,7 @@ const Footer = () => {
             <li><a href="#">Pagos</a></li>
             <li><a href="#">Envíos</a></li>
             <li><a href="#">Devoluciones</a></li>
+            <li><Link to="/Admin">Administrador</Link></li> {/* Enlace a la página Admin */}
           </ul>
         </div>
         <div className="footer-column">
