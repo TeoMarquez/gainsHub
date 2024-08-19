@@ -29,7 +29,7 @@ Este proyecto es una aplicación de comercio electrónico que permite a los usua
 - **Frontend**: React, React Router
 - **Backend**: Express.js, Node.js
 - **Base de Datos**: MySQL
-- **Otros**: Stripe API, dotenv, MercadoPago API (opcional)
+- **Otros**: Stripe API, dotenv
 
 ## Instalación
 
