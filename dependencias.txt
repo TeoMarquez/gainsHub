@@ -1,1 +1,2 @@
+concurrently
 npm install nodemon
