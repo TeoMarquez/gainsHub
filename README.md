@@ -112,7 +112,7 @@ Administración: Los administradores pueden gestionar productos y pedidos desde 
 
 ## Integrantes
 
-- Mateo Marquez
-- Alejandra Justiniano
-- Facundo Rodriguez
-- Camila Vera
+- **Mateo Santiago Marquez** - Programador Backend
+- **Alejandra Kiara Justiniano Olmos** - Programadora Frontend
+- **Facundo Nahuel Rodriguez** - Programador Frontend 
+- **Camila Michelle Vera** - Diseñadora UX/UI
