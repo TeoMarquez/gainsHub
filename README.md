@@ -65,22 +65,21 @@ Crea un archivo .env en la raíz del proyecto para el frontend y otro para el ba
 Para el Backend
 
 ```bash
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=12345678
-DB_NAME=gainsHub
-EMAIL_USER=noesporahi.dataclub@gmail.com
-EMAIL_PASS=rcxo kolo bbmh bgob
-MERCADO_PAGO_ACCESS_TOKEN=YOUR_ACCESS_TOKEN
-STRIPE_PRIVATE_KEY=sk_test_51PoEIpP7QSVpLRj0qIoOHden4cRiccMvERENGiyqV6P7lcZZQx0CLpPyPhtydX2SZQOVaQr7Mro3RgLZcTjvg5aC00BEeURQJ7
-FRONTEND_URL=http://localhost:3000
+PORT=Puerto de tu app
+DB_HOST=Direccion de tu DB
+DB_USER=Usuario de tu DBM
+DB_PASSWORD=Contraseña de tu DB
+DB_NAME=Nombre de tu DB
+EMAIL_USER=Correo que utilizaras para mandar los codigos de verificación
+EMAIL_PASS=Tu contraseña pass de tu email
+STRIPE_PRIVATE_KEY=Tu key de stripe
+FRONTEND_URL=direccion donde se ejecuta tu app frontend
 ```
 
 Para el Frontend
 
 ```bash
-REACT_APP_BACKEND_URL=http://localhost:5000
+REACT_APP_BACKEND_URL=direccion donde se ejecuta tu app backend
 ```
 
 Ejecutar el Proyecto
