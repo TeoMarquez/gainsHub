@@ -15,7 +15,25 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export const ProductsTable = ({ onAddProduct }) => {
   const [products, setProducts] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate(); // Usa useNavigate para redirigir
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/api/viewAllProducts`, {
+          params: {
+            search: searchQuery,
+          }
+        });
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error al cargar los productos:', error);
+      }
+    };
+
+    fetchProducts();
+  }, [searchQuery]);
 
   const toggleDropdown = (index, event) => {
     event.stopPropagation();
@@ -76,6 +94,15 @@ export const ProductsTable = ({ onAddProduct }) => {
     <div className="orders-table-container">
       <h2>Productos</h2>
       <p>Gestiona tu catálogo de productos.</p>
+      
+      <div className="search-bar">
+        <input 
+          type="text" 
+          placeholder="Búsqueda..." 
+          value={searchQuery} 
+          onChange={(e) => setSearchQuery(e.target.value)} 
+        />
+      </div>
 
       <div>
         <button className="add-product" onClick={onAddProduct}>Añadir producto</button>

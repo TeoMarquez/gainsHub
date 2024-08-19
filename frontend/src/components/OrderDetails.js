@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles/OrderDetails.css';
-import ProductList_Admin from './ProductList_Admin';
+import ProductList from './ProductList-Admin';
 
 const OrderDetails = ({ order, onClose }) => {
   return (
@@ -24,7 +24,7 @@ const OrderDetails = ({ order, onClose }) => {
           <p><strong>Estado:</strong> {order.status}</p>
         </div>
       </div>
-      <ProductList_Admin products={order.products} />
+      <ProductList products={order.products} />
     </div>
   );
 };

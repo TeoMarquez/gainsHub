@@ -16,6 +16,7 @@ export const OrdersTable = ({ estado }) => {
   const [orders, setOrders] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(null);
   const [statusDropdownVisible, setStatusDropdownVisible] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showOrderDetails, setShowOrderDetails] = useState(false); // Definir el estado para mostrar los detalles
@@ -52,6 +53,10 @@ const viewOrderDetails = async (orderId) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    fetchOrders(searchQuery);
+  }, [searchQuery]);
 
   const toggleDropdown = (index, event) => {
     event.stopPropagation();
@@ -153,10 +158,25 @@ const viewOrderDetails = async (orderId) => {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchOrders(searchQuery);
+  };
+
   return (
     <div className="orders-table-container">
       <h2>Órdenes</h2>
       <p>Ventas recientes de tu tienda.</p>
+
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Búsqueda..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={handleSearch}>Buscar</button>
+      </div>
 
       {loading ? (
         <p>Cargando...</p>
