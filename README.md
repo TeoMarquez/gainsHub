@@ -9,8 +9,7 @@ Una plataforma de comercio electrónico que permite a los usuarios gestionar pro
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
 - [Instalación](#instalación)
 - [Uso](#uso)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
+
 
 ## Descripción
 
@@ -35,30 +34,33 @@ Este proyecto es una aplicación de comercio electrónico que permite a los usua
 
 Sigue estos pasos para configurar y ejecutar el proyecto en tu máquina local:
 
-1. **Clonar el Repositorio**
+1. *Clonar el Repositorio**
 
    Clona el repositorio desde GitHub:
-## Clonar el Repositorio
-
 ```bash
 git clone https://github.com/tu-usuario/tu-repositorio.git
 
 Instalar Dependencias
-Navega al directorio del proyecto y luego al frontend:
 
+   Navega al directorio del proyecto y luego al frontend:
+
+```bash
 cd tu-repositorio
 cd frontend
 npm install
 
 Luego, navega al directorio del backend:
 
+```bash
 cd ../backend
 npm install
 
 Configurar Variables de Entorno
 Crea un archivo .env en la raíz del proyecto para el frontend y otro para el backend. Aquí están los contenidos necesarios:
 
-Para el Frontend
+Para el Backend
+
+```bash
 PORT=5000
 DB_HOST=localhost
 DB_USER=root
@@ -70,21 +72,31 @@ MERCADO_PAGO_ACCESS_TOKEN=YOUR_ACCESS_TOKEN
 STRIPE_PRIVATE_KEY=sk_test_51PoEIpP7QSVpLRj0qIoOHden4cRiccMvERENGiyqV6P7lcZZQx0CLpPyPhtydX2SZQOVaQr7Mro3RgLZcTjvg5aC00BEeURQJ7
 FRONTEND_URL=http://localhost:3000
 
-Para el Backend
+Para el Frontend
+```bash
 REACT_APP_BACKEND_URL=http://localhost:5000
 
 Ejecutar el Proyecto
 Inicia el servidor backend:
 
+```bash
 cd backend
 npm start
 
 En otro terminal, inicia el servidor frontend:
 
+```bash
 cd frontend
 npm start
 
-Uso
+o tambien puedes iniciar el ambas al mismo tiempo usando
+
+```bash
+npm start
+
+en la carpeta que contiene ambas carpetas
+
+## Uso
 Registro e Inicio de Sesión: Los usuarios pueden registrarse e iniciar sesión desde la página principal.
 Añadir Productos al Carrito: Los productos pueden añadirse al carrito desde la página de productos.
 Finalizar Compra: Los usuarios pueden proceder al pago desde la página del carrito, utilizando Stripe para el procesamiento de pagos.
