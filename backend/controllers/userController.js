@@ -87,7 +87,8 @@ const login = (req, res) => {
     return res.status(400).json({ message: 'Email y contraseña son requeridos' });
   }
 
-  const checkUserQuery = 'SELECT email, rol, verificado FROM Usuarios WHERE email = ? AND contraseña = ?';
+  // Actualiza la consulta para incluir el campo usuarioID
+  const checkUserQuery = 'SELECT usuarioID, email, rol, verificado FROM usuarios WHERE email = ? AND contraseña = ?';
   const values = [email, contraseña];
 
   db.query(checkUserQuery, values, (err, results) => {
@@ -100,13 +101,18 @@ const login = (req, res) => {
       return res.status(400).json({ message: 'Email o contraseña incorrectos' });
     }
 
-    const { rol, verificado } = results[0];
+    const { usuarioID, rol, verificado } = results[0];
 
     if (verificado === 0) {
       return res.status(400).json({ message: 'La cuenta no ha sido verificada. Revisa tu correo para verificarla.' });
     }
 
-    res.status(200).json({ message: `Inicio de sesión exitoso como ${rol}`, rol });
+    // Incluye el usuarioID en la respuesta
+    res.status(200).json({ 
+      message: `Inicio de sesión exitoso como ${rol}`, 
+      rol, 
+      id: usuarioID 
+    });
   });
 };
 
@@ -134,4 +140,56 @@ const verifyAccount = (req, res) => {
   });
 };
 
-module.exports = { register, login, verifyAccount };
+const getAccount = (req, res) => {
+  const userId = req.params.userId;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'ID de usuario requerido' });
+  }
+
+  const query = 'SELECT nombre AS name, email, direccion AS address FROM usuarios WHERE usuarioID = ?'; // Updated query
+  
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Error al consultar la base de datos:', err);
+      return res.status(500).json({ message: 'Error al recuperar la información del usuario' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json(results[0]);
+  });
+};
+
+
+const updateUser = (req, res) => {
+  const userId = req.params.userId;
+  const { name, address } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'ID de usuario requerido' });
+  }
+
+  if (!name || !address) {
+    return res.status(400).json({ message: 'Nombre y dirección son requeridos' });
+  }
+
+  const query = 'UPDATE usuarios SET nombre = ?, direccion = ? WHERE usuarioID = ?';
+
+  db.query(query, [name, address, userId], (err, results) => {
+    if (err) {
+      console.error('Error al actualizar la información del usuario:', err);
+      return res.status(500).json({ message: 'Error al actualizar la información del usuario' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json({ message: 'Información actualizada correctamente' });
+  });
+};
+
+module.exports = { register, login, verifyAccount, getAccount, updateUser };

@@ -161,38 +161,43 @@ const removeProductFromWishlist = (req, res) => {
 
 
 const viewWishlist = (req, res) => {
-const { usuarioID } = req.body;
-
-if (!usuarioID) {
-    return res.status(400).json({ message: 'El ID del usuario es requerido' });
-}
-
-// Consulta base para obtener los productos en la wishlist
-let query = `
-    SELECT 
-    w.wishlistID,
-    wp.productoID,
-    p.descripcion AS productoDescripcion
-    FROM Wishlist w
-    JOIN WishlistProductos wp ON w.wishlistID = wp.wishlistID
-    JOIN Productos p ON wp.productoID = p.productoID
-    WHERE w.usuarioID = ?
-`;
-
-// Ejecutar la consulta
-db.query(query, [usuarioID], (err, results) => {
-    if (err) {
-    console.error('Error al consultar la wishlist:', err);
-    return res.status(500).json({ message: 'Error al consultar la wishlist' });
+    const { usuarioID } = req.body;
+  
+    if (!usuarioID) {
+      return res.status(400).json({ message: 'El ID del usuario es requerido' });
     }
-
-    if (results.length === 0) {
-    return res.status(404).json({ message: 'No se encontraron productos en la wishlist' });
-    }
-
-    res.status(200).json(results);
-});
-};
-
+  
+    // Consulta base para obtener los productos en la wishlist, incluyendo la categoría
+    let query = `
+      SELECT 
+        w.wishlistID,
+        wp.productoID,
+        p.descripcion AS productoDescripcion,
+        p.img,
+        p.precioUnitario AS price,
+        c.nombre AS categoryName
+      FROM Wishlist w
+      JOIN WishlistProductos wp ON w.wishlistID = wp.wishlistID
+      JOIN Productos p ON wp.productoID = p.productoID
+      JOIN Categorias c ON p.categoriaID = c.categoriaID  -- Ajusta el nombre de la tabla y el campo según tu esquema
+      WHERE w.usuarioID = ?
+    `;
+  
+    // Ejecutar la consulta
+    db.query(query, [usuarioID], (err, results) => {
+      if (err) {
+        console.error('Error al consultar la wishlist:', err);
+        return res.status(500).json({ message: 'Error al consultar la wishlist' });
+      }
+  
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'No se encontraron productos en la wishlist' });
+      }
+  
+      res.status(200).json(results);
+    });
+  };
+  
+  
 
 module.exports = {addProductToWishlist,removeProductFromWishlist,viewWishlist}
