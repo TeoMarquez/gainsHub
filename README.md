@@ -1,6 +1,6 @@
 # GainsHub
 
-Una plataforma de comercio electrónico que permite a los usuarios gestionar productos, realizar pedidos y procesar pagos con integración de Stripe.
+Una plataforma de comercio electrónico que permite a los usuarios gestionar productos, realizar pedidos y procesar pagos con integración de Stripe. Presentada en las olimpiadas de programación 2024
 
 ## Tabla de Contenidos
 
@@ -9,6 +9,7 @@ Una plataforma de comercio electrónico que permite a los usuarios gestionar pro
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
 - [Instalación](#instalación)
 - [Uso](#uso)
+- [Integrantes](#Integrantes)
 
 
 ## Descripción
@@ -108,3 +109,10 @@ Registro e Inicio de Sesión: Los usuarios pueden registrarse e iniciar sesión 
 Añadir Productos al Carrito: Los productos pueden añadirse al carrito desde la página de productos.
 Finalizar Compra: Los usuarios pueden proceder al pago desde la página del carrito, utilizando Stripe para el procesamiento de pagos.
 Administración: Los administradores pueden gestionar productos y pedidos desde el panel de administración.
+
+## Integrantes
+
+- Mateo Marquez
+- Alejandra Justiniano
+- Facundo Rodriguez
+- Camila Vera
