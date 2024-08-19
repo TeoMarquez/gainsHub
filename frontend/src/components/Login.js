@@ -1,5 +1,6 @@
 // src/components/Login.js
 import React, { useState } from 'react';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Login = ({ onLoginSuccess, onClose }) => {
   const [email, setEmail] = useState('');
@@ -7,26 +8,30 @@ const Login = ({ onLoginSuccess, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch(`${backendUrl}/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, contraseña: password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         sessionStorage.setItem('rol', data.rol);
+        sessionStorage.setItem('userId', data.id);
+        console.log('Rol guardado:', sessionStorage.getItem('rol'));
+        console.log('ID guardado:', sessionStorage.getItem('userId'));
         onLoginSuccess(); // Marcar el inicio de sesión como exitoso
         onClose(); // Cerrar el modal
         alert(data.message);
       } else {
         alert(data.message);
       }
+      
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       alert('Error al iniciar sesión. Inténtalo de nuevo más tarde.');

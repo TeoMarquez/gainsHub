@@ -1,4 +1,3 @@
-// src/components/Header.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import user from '../assets/images/User.jpg'; 
@@ -7,12 +6,9 @@ import shopping from '../assets/images/shopping.svg';
 import './styles/Header.css';
 import Modal from './Modal';
 import Login from './Login';
-import { TextInput } from '@tremor/react';
 import { SearchBar } from './SearchBar';
 
-export const TextInputHero = () => <TextInput className="search-bar" />;
-
-const Header = () => {
+const Header = ({ cartItems }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,17 +31,16 @@ const Header = () => {
     setIsProductsDropdownOpen(prevState => !prevState);
   };
 
-  const handleProfileClick = () => {
-    if (isLoggedIn) {
-      navigate('/miperfil');
-    } else {
-      navigate('/login');
-    }
+  const handleLogout = () => {
+    sessionStorage.removeItem('rol');
+    sessionStorage.removeItem('userId');
+    setIsLoggedIn(false);
+    setIsDropdownOpen(false); 
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('rol'); // Eliminar el rol de sessionStorage al cerrar sesión
-    setIsLoggedIn(false);
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true); 
+    setIsModalOpen(false); 
   };
 
   const openModal = () => {
@@ -56,8 +51,12 @@ const Header = () => {
     setIsModalOpen(false);
   };
 
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
+  const handleProfileClick = () => {
+    if (isLoggedIn) {
+      navigate('/miperfil');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (
@@ -99,31 +98,35 @@ const Header = () => {
               {isLoggedIn ? (
                 <>
                   <li><Link to="/miperfil">Mi Perfil</Link></li>
-                  <li><Link to="/micarrito">Ver Carrito</Link></li>
                   <li><button onClick={handleLogout}>Cerrar Sesión</button></li>
                 </>
               ) : (
                 <>
                   <li><Link to="/Register">Registrarse</Link></li>
-                  <li><button onClick={openModal}>Iniciar Sesion</button></li>
+                  <li><button onClick={openModal}>Iniciar Sesión</button></li>
                 </>
               )}
             </ul>
           </div>
         )}
         <div className='wishlist-icon'>
-          <img
-          className="heart-icon icon"
-          src={heart}
-          alt="Wishlist Icon"
-          />
+          <Link to="/wishlist">
+            <img
+              className="heart-icon icon"
+              src={heart}
+              alt="Wishlist Icon"
+            />
+          </Link>
         </div>
         <div className='carrito-icon'>
-          <img
-          className="bag-icon icon"
-          src={shopping}
-          alt="Shopping Icon"
-          />
+          <Link to="/cart">
+            <img
+              className="bag-icon icon"
+              src={shopping}
+              alt="Shopping Icon"
+            />
+            {cartItems.length > 0 && <span className="cart-count">{cartItems.length}</span>}
+          </Link>
         </div>
       </div>
       {isModalOpen && (

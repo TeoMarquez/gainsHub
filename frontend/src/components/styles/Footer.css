@@ -2,6 +2,9 @@
   background-color: #ffffff; /* Color del fondo del footer */
   color: #000000; /* Color del texto */
   padding: 20px;
+  
+  position: static; /* O relative */
+  
 }
 
 .footer-content {

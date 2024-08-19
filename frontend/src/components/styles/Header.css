@@ -7,6 +7,7 @@
   color: #000000;
   font-family: "Kanit";
   position: relative;
+  z-index: 100; 
 }
 
 .logo img {
@@ -43,17 +44,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px; /* Tamaño uniforme para todos los íconos */
-  width: 40px;  /* Tamaño uniforme para todos los íconos */
-  min-width: 40px;  /* Asegura que el contenedor no colapse */
-  min-height: 40px; /* Asegura que el contenedor no colapse */
+  height: 50px; 
+  width: 50px;  
+  min-width: 50px;
+  min-height: 50px;
+  margin-right: 10px;
+  margin-top: 10px;
   cursor: pointer;
 }
 
 .user-options img, .wishlist-icon img, .carrito-icon img {
-  height: 100%; /* Ajusta la altura de la imagen al contenedor */
-  width: 100%;  /* Ajusta el ancho de la imagen al contenedor */
-  object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
+  height: 100%; 
+  width: 100%;  
+  object-fit: contain; 
   padding: 5px;
 } 
 
@@ -70,7 +73,6 @@
 .icons-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* Reduce el espacio entre los íconos */
 }
 
 .search-bar {
@@ -105,7 +107,7 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   border-radius: 4px;
   font-family: "Kanit";
-  z-index: 1000;
+  z-index: 1000; 
   cursor: pointer;
 }
 
@@ -144,6 +146,7 @@
   border-radius: 4px;
   font-family: "Kanit";
   width: auto;
+  z-index: 1000; 
 }
 
 .dropdown-products ul {

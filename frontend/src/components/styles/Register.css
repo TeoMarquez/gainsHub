@@ -64,7 +64,7 @@
 }
 
 .social-login strong{
-  color: #ffffff;
+  color: #000000;
 }
 
 .social-buttons {
@@ -80,5 +80,5 @@
 }
 
 .social-btn img {
-  width: 100px; /* Ajusta el tamaño según tus necesidades */
+  width: 50px;
 }

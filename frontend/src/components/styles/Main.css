@@ -1,25 +1,121 @@
-/* styles/Main.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: 'Kanit', sans-serif;
+  overflow-x: hidden; /* Evita el desplazamiento horizontal */
+}
 
-body {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
-    background-color: #000000;
-    color: white;
-    font-family: "Kanit"
-  }
-  
-  #root {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-  }
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Asegura que el contenido ocupe al menos toda la altura de la ventana */
+}
 
-  h1{
-    font-size: 30px;
-    margin-left: 30px;
-  }
-  
+h1 {
+  font-size: 28px;
+  margin-left: 30px;
+  margin-bottom: 0;
+}
+
+p {
+  font-size: 23px;
+  color: rgb(0, 0, 0);
+  margin-left: 40px;
+  margin-top: 5px;
+}
+
+.container {
+  flex: 1; /* Permite que el contenedor se expanda para llenar el espacio disponible */
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  padding-bottom: 50px; /* Asegura que haya espacio para el pie de página */
+}
+
+/* Footer Styling */
+.footer {
+  background-color: #ffffff; /* Color del fondo del footer */
+  color: #000000; /* Color del texto */
+  padding: 20px;
+  border-top: solid 1px #bcbcbc;
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/* Main.css */
+
+/* Banner Section */
+.banner {
+  position: relative;
+  width: 100%;
+  height: 400px; /* Ajusta la altura del banner según lo necesites */
+  overflow: hidden;
+}
+
+.banner-image {
+  width: 100%;
+  height: 150%;
+  object-fit: cover; /* Asegura que la imagen cubra completamente el contenedor */
+  object-position: center; /* Centra la imagen en el contenedor */
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.banner-button {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.renueva-estilo {
+  background-color: #000;
+  color: #fff;
+  padding: 40px 20px;
+}
+
+.renueva-estilo .renueva-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.renueva-estilo h2,
+.renueva-estilo p {
+  color: #fff; /* Asegura que el texto se mantenga blanco */
+}
+
+.renueva-estilo .banner-button {
+  background-color: #fff;
+  color: #000;
+}

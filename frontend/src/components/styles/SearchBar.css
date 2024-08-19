@@ -1,0 +1,55 @@
+/* styles/SearchBar.css */
+
+.search-bar {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000; /* Ajusta el color del icono */
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 10px 10px 10px 40px; /* Deja espacio para el icono */
+    font-size: 16px;
+  }
+  
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .search-result-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .search-result-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .search-result-name {
+    font-size: 16px;
+  }
+  

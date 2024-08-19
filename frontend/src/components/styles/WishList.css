@@ -1,0 +1,29 @@
+.wishlist-item-buttons {
+  display: flex;
+  gap: 12px; /* Aumentado ligeramente para mayor claridad entre los botones */
+  margin-top: 15px; /* Aumentado para una mejor separación del contenido */
+}
+
+.wishlist-item-button {
+  padding: 10px 20px; /* Ligeramente aumentado para un mejor toque visual */
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.wishlist-item-button:hover {
+  background-color: #444;
+}
+
+.carrito-button {
+  background-color: #007bff; /* Azul para diferenciar el botón de carrito */
+}
+
+.carrito-button:hover {
+  background-color: #0056b3;
+}
