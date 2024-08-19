@@ -6,3 +6,4 @@ npm install crypto
 npm install multer
 npm install nodemon
 npm install env
+npm install bcrypt
