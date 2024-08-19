@@ -3,3 +3,8 @@ npm install react
 npm install express mysql2
 npm install @tremor/react
 npm install @remixicon/react
+npm install react-icons
+npm install axios
+
+npm install multer@latest
+npm install busboy@latest
