@@ -2,6 +2,8 @@ const db = require('../config/db.js');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
+const saltRounds = 10; // Número de rondas de salt para el hash
 
 // Configuración del transporte de nodemailer
 const transporter = nodemailer.createTransport({
@@ -17,9 +19,8 @@ const generateVerificationToken = () => {
   return crypto.randomBytes(32).toString('hex');
 };
 
-// Función para enviar el correo de verificación
 const sendVerificationEmail = (to, verificationToken) => {
-  const verificationLink = `http://localhost:5000/api/verify-email?token=${verificationToken}`;
+  const verificationLink = `${process.env.BACKEND_URL}/api/verify-email?token=${verificationToken}`;
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: to,
@@ -36,11 +37,9 @@ const sendVerificationEmail = (to, verificationToken) => {
   });
 };
 
-// Función para manejar registro
 const register = (req, res) => {
   const { nombre, email, contraseña, direccion, telefono, rol } = req.body;
 
-  // Agregar un console.log para depurar
   console.log('Datos recibidos:', req.body);
 
   if (!nombre || !email || !contraseña || !direccion || !telefono || !rol) {
@@ -58,28 +57,35 @@ const register = (req, res) => {
       return res.status(400).json({ message: 'El email ya está registrado' });
     }
 
-    const token = generateVerificationToken();
-
-    const insertQuery = `
-      INSERT INTO Usuarios (nombre, email, contraseña, direccion, telefono, fechaRegistro, rol, verificado, verificationToken) 
-      VALUES (?, ?, ?, ?, ?, NOW(), ?, 0, ?)
-    `;
-    const values = [nombre, email, contraseña, direccion, telefono, rol, token];
-
-    db.query(insertQuery, values, (err, results) => {
+    // Cifrar la contraseña antes de almacenarla
+    bcrypt.hash(contraseña, saltRounds, (err, hashedPassword) => {
       if (err) {
-        console.error('Error al insertar en la base de datos:', err);
+        console.error('Error al cifrar la contraseña:', err);
         return res.status(500).json({ message: 'Error al registrar el usuario' });
       }
 
-      sendVerificationEmail(email, token);
+      const token = generateVerificationToken();
 
-      res.status(201).json({ message: `Usuario registrado exitosamente como ${rol}. Revisa tu correo para verificar la cuenta.` });
+      const insertQuery = `
+        INSERT INTO Usuarios (nombre, email, contraseña, direccion, telefono, fechaRegistro, rol, verificado, verificationToken) 
+        VALUES (?, ?, ?, ?, ?, NOW(), ?, 0, ?)
+      `;
+      const values = [nombre, email, hashedPassword, direccion, telefono, rol, token];
+
+      db.query(insertQuery, values, (err, results) => {
+        if (err) {
+          console.error('Error al insertar en la base de datos:', err);
+          return res.status(500).json({ message: 'Error al registrar el usuario' });
+        }
+
+        sendVerificationEmail(email, token);
+
+        res.status(201).json({ message: `Usuario registrado exitosamente como ${rol}. Revisa tu correo para verificar la cuenta.` });
+      });
     });
   });
 };
 
-// Función para manejar inicio de sesión
 const login = (req, res) => {
   const { email, contraseña } = req.body;
 
@@ -87,9 +93,8 @@ const login = (req, res) => {
     return res.status(400).json({ message: 'Email y contraseña son requeridos' });
   }
 
-  // Actualiza la consulta para incluir el campo usuarioID
-  const checkUserQuery = 'SELECT usuarioID, email, rol, verificado FROM usuarios WHERE email = ? AND contraseña = ?';
-  const values = [email, contraseña];
+  const checkUserQuery = 'SELECT usuarioID, email, rol, verificado, contraseña FROM Usuarios WHERE email = ?';
+  const values = [email];
 
   db.query(checkUserQuery, values, (err, results) => {
     if (err) {
@@ -101,22 +106,33 @@ const login = (req, res) => {
       return res.status(400).json({ message: 'Email o contraseña incorrectos' });
     }
 
-    const { usuarioID, rol, verificado } = results[0];
+    const { usuarioID, rol, verificado, contraseña: hashedPassword } = results[0];
 
-    if (verificado === 0) {
-      return res.status(400).json({ message: 'La cuenta no ha sido verificada. Revisa tu correo para verificarla.' });
-    }
+    // Verificar la contraseña
+    bcrypt.compare(contraseña, hashedPassword, (err, result) => {
+      if (err) {
+        console.error('Error al comparar la contraseña:', err);
+        return res.status(500).json({ message: 'Error al iniciar sesión' });
+      }
 
-    // Incluye el usuarioID en la respuesta
-    res.status(200).json({ 
-      message: `Inicio de sesión exitoso como ${rol}`, 
-      rol, 
-      id: usuarioID 
+      if (!result) {
+        return res.status(400).json({ message: 'Email o contraseña incorrectos' });
+      }
+
+      if (verificado === 0) {
+        return res.status(400).json({ message: 'La cuenta no ha sido verificada. Revisa tu correo para verificarla.' });
+      }
+
+      res.status(200).json({ 
+        message: `Inicio de sesión exitoso como ${rol}`, 
+        rol, 
+        id: usuarioID 
+      });
     });
   });
 };
 
-// Función para verificar el token de verificación
+
 const verifyAccount = (req, res) => {
   const { token } = req.query;
 
