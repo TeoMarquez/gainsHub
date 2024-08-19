@@ -5,7 +5,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../components/styles/Main.css';
 import '../components/styles/Register.css';
-import logoGoogle from '../assets/images/RedesSociales/el-logo-g-de-google.png';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -27,7 +28,7 @@ const Register = () => {
     }
   
     try {
-      const response = await fetch('http://localhost:5000/api/register', {
+      const response = await fetch(`${backendUrl}/api/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,6 +46,7 @@ const Register = () => {
       const result = await response.json();
   
       if (response.ok) {
+        alert('Registrado, Verifica tu cuenta desde tu correo')
         setSuccess(result.message);
         setError('');
         navigate('/');
@@ -61,7 +63,6 @@ const Register = () => {
 
   return (
     <>
-      <Header />
       <div className="register-container">
         <div className="register-form">
           <h2>Registrarse</h2>
@@ -137,16 +138,7 @@ const Register = () => {
             </div>
           </form>
         </div>
-        <div className="social-login">
-          <h2><strong>Iniciar Sesión con Redes Sociales</strong></h2>
-          <div className="social-buttons">
-            <button className="social-btn" data-app="Google">
-              <img src={logoGoogle} alt="Google" />
-            </button>
-          </div>
-        </div>
       </div>
-      <Footer />
     </>
   );
 };

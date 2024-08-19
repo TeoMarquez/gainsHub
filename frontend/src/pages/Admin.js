@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/sidebar'; 
 import '../components/styles/Admin.css';
 import '../components/styles/Main.css';
@@ -6,12 +7,20 @@ import { OrdersTable } from '../components/OrderTable';
 import { ProductsTable } from '../components/ProductTable';
 import AddProducts from '../components/AddProducts';
 import ProductDetails from '../components/ProductDetails';
-import remera from '../assets/images/camiseta-algodon.png'
 
 const Admin = () => {
   const [selectedSection, setSelectedSection] = useState('orders');
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [product, setProduct] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const role = sessionStorage.getItem('rol');
+    if (role !== 'jefeVentas') {
+      alert('No dispone de permisos de administrador');
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleSectionSelect = (section) => {
     setSelectedSection(section);
@@ -21,17 +30,6 @@ const Admin = () => {
 
   const handleAddProduct = () => {
     setShowAddProduct(true);
-    setProduct({
-      id: '001',
-      name: 'Camiseta de entrenamiento',
-      description: 'Camiseta de algodón y transpirable',
-      price: '$30.000',
-      category: 'Ropa deportiva',
-      stock: 100,
-      size: 'M',
-      color: 'Negro',
-      image: 'remera' // Ruta de la imagen
-    });
   };
 
   const renderContent = () => {
@@ -43,13 +41,15 @@ const Admin = () => {
         </>
       );
     }
+    
+    // Utiliza la sección seleccionada como parte de la clave para forzar el remonte
     switch (selectedSection) {
       case 'orders':
-        return <OrdersTable />;
+        return <OrdersTable key={`orders-${selectedSection}`} estado="pendiente" />;
       case 'products':
         return <ProductsTable onAddProduct={handleAddProduct} />;
       default:
-        return <p>Selecciona una sección</p>;
+        return <OrdersTable key={`orders-${selectedSection}`} estado="entregado" />;
     }
   };
 
