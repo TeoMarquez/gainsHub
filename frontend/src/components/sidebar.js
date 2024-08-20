@@ -7,7 +7,7 @@ const Sidebar = ({ onSectionSelect }) => {
   return (
     <div className="sidebar">
       {/* Sección Admin sin icono */}
-      <div className="item adminItem">Admin</div>
+      <div className="item adminItem">GainsHub</div>
 
       {/* Sección Inicio con icono, usa Link */}
       <div className="item">
@@ -33,7 +33,7 @@ const Sidebar = ({ onSectionSelect }) => {
       {/* Sección Facturas con icono */}
       <div className="item" onClick={() => onSectionSelect('invoices')}>
         <div className="item-link">
-          <FaFileInvoice className="icon" /> Facturas
+          <FaFileInvoice className="icon" /> Órdenes entregadas
         </div>
       </div>
     </div>

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './styles/ProductCard.css'; // Asegúrate de que la ruta del CSS sea correcta
+import './styles/ProductCard.css';
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ProductCard = ({ product, categoryName, isInWishList }) => {
   const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState(product.imageUrl);
+  const [inWishlist, setInWishlist] = useState(isInWishList);
 
   // Navegar a la página de detalles del producto
   const handleClick = () => {
@@ -18,8 +19,9 @@ const ProductCard = ({ product, categoryName, isInWishList }) => {
   };
 
   // Añadir producto a la lista de deseos
-  const handleAddToWishList = async () => {
-    const usuarioID = sessionStorage.getItem('userId'); // Obtener el usuarioID del sessionStorage
+  const handleAddToWishList = async (e) => {
+    e.stopPropagation(); // Evita que el clic en el corazón dispare otros clics
+    const usuarioID = sessionStorage.getItem('userId');
     if (!usuarioID) {
       console.error('Usuario no autenticado');
       return;
@@ -33,12 +35,13 @@ const ProductCard = ({ product, categoryName, isInWishList }) => {
         },
         body: JSON.stringify({
           usuarioID,
-          descripcion: product.name, // Enviar la descripción del producto
+          descripcion: product.name,
         }),
       });
 
       if (response.ok) {
         console.log('Producto añadido a la lista de deseos');
+        setInWishlist(true);
       } else {
         const errorData = await response.json();
         console.error('Error al añadir el producto:', errorData.message);
@@ -50,25 +53,37 @@ const ProductCard = ({ product, categoryName, isInWishList }) => {
 
   return (
     <div className="product-card">
-      <img 
-        src={imageSrc} 
-        alt={product.name} 
-        className="product-image" 
-        onError={handleError} 
-      />
+      <div className="image-container" onClick={handleClick}>
+        <img 
+          src={imageSrc} 
+          alt={product.name} 
+          className="product-image" 
+          onError={handleError} 
+        />
+        <div className="wishlist-icon-container">
+          <button
+            className={`wishlist-button ${inWishlist ? 'in-wishlist' : ''}`} 
+            onClick={handleAddToWishList}
+          >
+            ♥
+          </button>
+        </div>
+      </div>
       <div className="product-info">
         <h3 className="product-name">{product.name}</h3>
+        <p className="product-category">Categoría: {categoryName}</p>
+        {product.collection && (
+          <p className="product-collection">Colección: {product.collection}</p>
+        )}
+        {product.novedad && (
+          <span className="product-label new">Novedad</span>
+        )}
+        {product.lo_mejor && (
+          <span className="product-label best">Lo Mejor</span>
+        )}
         <p className="product-price">${product.price}</p>
         <button className="add-to-cart-button" onClick={handleClick}>
           Leer más
-        </button>
-        
-        {/* Botón de añadir a la lista de deseos */}
-        <button 
-          className={`wishlist-button ${isInWishList ? 'in-wishlist' : ''}`} 
-          onClick={handleAddToWishList}
-        >
-          ♥
         </button>
       </div>
     </div>

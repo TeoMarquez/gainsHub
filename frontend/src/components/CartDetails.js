@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PaymentButton from './PaymentButton';
+import './styles/CartDetails.css'; // Esta importación debe estar antes de cualquier otro código
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
@@ -22,7 +24,7 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/checkStock`)
+        const response = await fetch(`${backendUrl}/api/checkStock`);
         const data = await response.json();
         setStock(data);
       } catch (error) {
@@ -43,7 +45,9 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
     const isLoggedIn = !!sessionStorage.getItem('rol') || !!sessionStorage.getItem('userId');
     if (!isLoggedIn) {
       alert('Debes iniciar sesión para finalizar la compra.');
+      navigate('/login'); // Redirige al usuario a la página de inicio de sesión
     } else {
+      navigate('/checkout');
     }
   };
 
@@ -51,7 +55,9 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
     const isLoggedIn = !!sessionStorage.getItem('rol') || !!sessionStorage.getItem('userId');
     if (!isLoggedIn) {
       alert('Debes iniciar sesión para realizar el pago.');
+      navigate('/login'); // Redirige al usuario a la página de inicio de sesión
     } else {
+      // Aquí podrías añadir la lógica para proceder con el pago
     }
   };
 
@@ -59,10 +65,20 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
     const availableStock = stock[id] || 0;
     if (quantity > availableStock) {
       alert('La cantidad solicitada excede el stock disponible.');
+    } else if (availableStock === 0) {
+      alert('Este producto no está disponible actualmente.');
     } else {
       updateItemQuantity(id, quantity);
     }
   };
+
+  const total = calculateTotal();
+
+  // Verifica si hay algún producto sin stock
+  const hasNoStockItems = cartItems.some(item => stock[item.id] === 0);
+
+  // Obtén los nombres de los productos sin stock
+  const outOfStockItems = cartItems.filter(item => stock[item.id] === 0).map(item => item.name);
 
   return (
     <div className="cart-details">
@@ -88,9 +104,9 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
                   </td>
                   <td>{formatPrice(item.price)}</td>
                   <td>
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</button>
                     {item.quantity}
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} disabled={stock[item.id] === 0 || item.quantity >= stock[item.id]}>+</button>
                   </td>
                   <td>{formatPrice(calculateSubtotal(item))}</td>
                   <td>
@@ -103,14 +119,23 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
           <div className="cart-actions">
             <Link to="/">Seguir Comprando</Link>
             {!loggedIn && (
-              <button onClick={handleCheckout}>
+              <button onClick={handleCheckout} disabled={hasNoStockItems}>
                 Finalizar Compra
               </button>
             )}
-            {loggedIn && (
+            {loggedIn && !hasNoStockItems && total > 700 && (
               <PaymentButton cartItems={cartItems} onPaymentAttempt={handlePaymentAttempt} />
             )}
-            <h2>Total: {formatPrice(calculateTotal())}</h2>
+            <h2>Total: {formatPrice(total)}</h2>
+            {total <= 700 && (
+              <p className="warning-text">Advertencia: Solo se aceptan compras con un total mayor a $700.</p>
+            )}
+            {hasNoStockItems && (
+              <p className="error-text">
+                Algunos productos no están disponibles actualmente:
+                {outOfStockItems.join(', ')}. Por favor, revisa tu carrito.
+              </p>
+            )}
           </div>
         </>
       ) : (
@@ -121,3 +146,4 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
 };
 
 export default CartDetails;
+

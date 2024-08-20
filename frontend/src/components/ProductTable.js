@@ -8,24 +8,23 @@ import {
   TableRow,
 } from '@tremor/react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
+import './styles/ProductsTable.css'; 
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export const ProductsTable = ({ onAddProduct }) => {
   const [products, setProducts] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate(); // Usa useNavigate para redirigir
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortField, setSortField] = useState('descripcion');
+  const [callout, setCallout] = useState({ show: false, title: '', message: '', styleClass: '' });
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/api/viewAllProducts`, {
-          params: {
-            search: searchQuery,
-          }
-        });
+        const response = await axios.get(`${backendUrl}/api/viewAllProducts`);
         setProducts(response.data);
       } catch (error) {
         console.error('Error al cargar los productos:', error);
@@ -33,7 +32,7 @@ export const ProductsTable = ({ onAddProduct }) => {
     };
 
     fetchProducts();
-  }, [searchQuery]);
+  }, []);
 
   const toggleDropdown = (index, event) => {
     event.stopPropagation();
@@ -51,7 +50,6 @@ export const ProductsTable = ({ onAddProduct }) => {
   };
 
   const handleViewClick = (product) => {
-    // Redirige a la página de detalles del producto
     navigate(`/product/${encodeURIComponent(product.descripcion)}`);
   };
 
@@ -61,25 +59,57 @@ export const ProductsTable = ({ onAddProduct }) => {
     if (confirmation) {
       try {
         const response = await axios.post(`${backendUrl}/api/softDelete`, {
-          tableName: 'productos', // Nombre de la tabla según tu esquema
+          tableName: 'productos',
           id: product.productoID,
-          activo: 0, // Marcar como inactivo
+          activo: 0,
         });
 
         if (response.status === 200) {
-          alert('Producto eliminado con éxito');
+          setCallout({
+            show: true,
+            title: 'Éxito',
+            message: 'Producto eliminado con éxito.',
+            styleClass: 'callout-success',
+          });
           setProducts((prevProducts) =>
             prevProducts.filter((item) => item.productoID !== product.productoID)
           );
         } else {
-          alert('Error al eliminar el producto');
+          setCallout({
+            show: true,
+            title: 'Error',
+            message: 'Error al eliminar el producto.',
+            styleClass: 'callout-error',
+          });
         }
       } catch (error) {
         console.error('Error al eliminar el producto:', error);
-        alert('Hubo un error al eliminar el producto');
+        setCallout({
+          show: true,
+          title: 'Error',
+          message: 'Hubo un error al eliminar el producto.',
+          styleClass: 'callout-error',
+        });
       }
+      setTimeout(() => {
+        setCallout({ show: false, title: '', message: '', styleClass: '' });
+      }, 3000); // Oculta el Callout después de 3 segundos
     }
   };
+
+  const handleSortChange = (field) => {
+    const isAsc = sortField === field && sortOrder === 'asc';
+    setSortOrder(isAsc ? 'desc' : 'asc');
+    setSortField(field);
+  };
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortOrder === 'asc') {
+      return a[sortField] > b[sortField] ? 1 : -1;
+    } else {
+      return a[sortField] < b[sortField] ? 1 : -1;
+    }
+  });
 
   const renderDropdown = (index, product) => (
     dropdownVisible === index && (
@@ -94,44 +124,54 @@ export const ProductsTable = ({ onAddProduct }) => {
     <div className="orders-table-container">
       <h2>Productos</h2>
       <p>Gestiona tu catálogo de productos.</p>
-      
-      <div className="search-bar">
-        <input 
-          type="text" 
-          placeholder="Búsqueda..." 
-          value={searchQuery} 
-          onChange={(e) => setSearchQuery(e.target.value)} 
-        />
-      </div>
 
       <div>
         <button className="add-product" onClick={onAddProduct}>Añadir producto</button>
       </div>
 
+      <div className="filters">
+        <label>
+          Ordenar por:
+          <select onChange={(e) => handleSortChange(e.target.value)} value={sortField}>
+            <option value="descripcion">Nombre</option>
+            <option value="stock">Stock</option>
+          </select>
+        </label>
+      </div>
+
+      {callout.show && (
+        <div className={`fixed-callout ${callout.styleClass}`}>
+          <div className="callout-title">{callout.title}</div>
+          <div className="callout-message">{callout.message}</div>
+        </div>
+      )}
+
       <Table>
         <TableHead>
           <TableRow>
             <TableHeaderCell>Imagen</TableHeaderCell>
-            <TableHeaderCell>Producto</TableHeaderCell>
-            <TableHeaderCell>Categoria</TableHeaderCell>
-            <TableHeaderCell>Stock</TableHeaderCell>
+            <TableHeaderCell onClick={() => handleSortChange('descripcion')}>
+              Producto {sortField === 'descripcion' && (sortOrder === 'asc' ? '▲' : '▼')}
+            </TableHeaderCell>
+            <TableHeaderCell onClick={() => handleSortChange('stock')}>
+              Stock {sortField === 'stock' && (sortOrder === 'asc' ? '▲' : '▼')}
+            </TableHeaderCell>
             <TableHeaderCell>Precio</TableHeaderCell>
             <TableHeaderCell>Acción</TableHeaderCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {products.length > 0 ? products.map((product, index) => (
+          {sortedProducts.length > 0 ? sortedProducts.map((product, index) => (
             <TableRow key={product.productoID}>
               <TableCell>
-                <img 
-                  src={`${backendUrl}/uploads/${product.img}`} 
-                  alt={product.descripcion} 
-                  style={{ width: '50px', height: '50px', objectFit: 'cover' }} 
+                <img
+                  src={`${backendUrl}/uploads/${product.img}`}
+                  alt={product.descripcion}
+                  style={{ width: '50px', height: '50px', objectFit: 'cover' }}
                 />
               </TableCell>
               <TableCell>{product.descripcion}</TableCell>
-              <TableCell>{product.categoria}</TableCell>
               <TableCell>{product.stock}</TableCell>
               <TableCell>${Number(product.precioUnitario).toFixed(2)}</TableCell>
               <TableCell>
@@ -141,7 +181,7 @@ export const ProductsTable = ({ onAddProduct }) => {
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan="6">No se encontraron productos</TableCell>
+              <TableCell colSpan="5">No se encontraron productos</TableCell>
             </TableRow>
           )}
         </TableBody>

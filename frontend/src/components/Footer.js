@@ -43,32 +43,22 @@ const Footer = () => {
             <li><Link to="/productos/calzados">Calzados</Link></li>
             <li><Link to="/productos/pantalones">Pantalones</Link></li>
             <li><Link to="/productos/camisetas">Camisetas</Link></li>
-            <li><Link to="/productos/accesorios">Accesorios</Link></li>
-          </ul>
-        </div>
-        <div className="footer-column">
-          <h4>DEPORTES</h4>
-          <ul>
-            <li><Link to="/deportes/seleccion-argentina">Selección Argentina</Link></li>
-            <li><Link to="/deportes/boca-junior">Boca Junior</Link></li>
-            <li><Link to="/deportes/river-plate">River Plate</Link></li>
-            <li><Link to="/deportes/futbol">Fútbol</Link></li>
-            <li><Link to="/deportes/basquet">Básquet</Link></li>
+            <li><Link to="/productos/novedades">Novedades</Link></li>
+            <li><Link to="/productos/loMejor">Lo Mejor</Link></li>
+            <li><Link to="/productos/Colleciones">Colecciones</Link></li>
           </ul>
         </div>
         <div className="footer-column">
           <h4>ASISTENCIA</h4>
           <ul>
-            <li><Link to="/asistencia/pagos">Pagos</Link></li>
-            <li><Link to="/asistencia/envios">Envíos</Link></li>
-            <li><Link to="/asistencia/devoluciones">Devoluciones</Link></li>
+          <li><Link to="/formas-de-pago">Pagos</Link></li>
             <li><a href="#" onClick={handleAdminClick}>Administrador</a></li> {/* Enlace a la página Admin con modal si no está logueado */}
           </ul>
         </div>
         <div className="footer-column">
           <h4>INFORMACIÓN DE LA EMPRESA</h4>
           <ul>
-            <li><Link to="/informacion/acerca-de-la-tienda">Acerca de la tienda</Link></li>
+          <li><Link to="/about-us">Acerca de la tienda</Link></li>
           </ul>
         </div>
         <div className="footer-column">

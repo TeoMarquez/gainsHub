@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableRow,
 } from '@tremor/react';
 import './styles/Tables.css';
-import OrderDetails from './OrderDetails'; // Importa el componente OrderDetails
+import OrderDetails from './OrderDetails';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -16,55 +16,68 @@ export const OrdersTable = ({ estado }) => {
   const [orders, setOrders] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(null);
   const [statusDropdownVisible, setStatusDropdownVisible] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [showOrderDetails, setShowOrderDetails] = useState(false); // Definir el estado para mostrar los detalles
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
+  const [callout, setCallout] = useState({ show: false, title: '', message: '', styleClass: '' });
 
-const viewOrderDetails = async (orderId) => {
-    try {
-        const response = await fetch(`${backendUrl}/api/getOrderDetails`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ pedidoID: orderId }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-            setSelectedOrder(data);
-            setShowOrderDetails(true);
-        } else {
-            console.error('Error fetching order details:', data.message);
-        }
-    } catch (error) {
-        console.error('Error fetching order details:', error);
-    }
-};
+  const actionDropdownRef = useRef(null);
+  const statusDropdownRef = useRef(null);
 
+  // Estados para los filtros
+  const [orderSort, setOrderSort] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [dateSort, setDateSort] = useState('');
 
   useEffect(() => {
-    const handleScroll = () => {
-      setDropdownVisible(null);
-      setStatusDropdownVisible(null);
+    const handleClickOutside = (event) => {
+      if (
+        actionDropdownRef.current && !actionDropdownRef.current.contains(event.target) &&
+        statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)
+      ) {
+        setDropdownVisible(null);
+        setStatusDropdownVisible(null);
+      }
     };
-
-    window.addEventListener('scroll', handleScroll);
-    
+  
+    document.addEventListener('mouseup', handleClickOutside); // Cambiado a 'mouseup' para cerrar el menú después del clic.
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mouseup', handleClickOutside);
     };
   }, []);
+  
 
+  const viewOrderDetails = async (orderId) => {
+    try {
+      const response = await fetch(`${backendUrl}/api/getOrderDetails`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pedidoID: orderId }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSelectedOrder(data);
+        setShowOrderDetails(true);
+        setDropdownVisible(null); // Oculta el menú desplegable después de ver la orden.
+      } else {
+        console.error('Error fetching order details:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+    }
+  };
+  
   useEffect(() => {
-    fetchOrders(searchQuery);
-  }, [searchQuery]);
+    fetchOrders();
+  }, []);
 
-  const toggleDropdown = (index, event) => {
+  const toggleDropdown = (orderId, event) => {
     event.stopPropagation();
-    setDropdownVisible(dropdownVisible === index ? null : index);
+    setDropdownVisible(dropdownVisible === orderId ? null : orderId);
 
-    if (dropdownVisible !== index && event) {
+    if (dropdownVisible !== orderId && event) {
       const rect = event.target.getBoundingClientRect();
-      const dropdown = document.querySelector(`.dropdown-menu[data-index='${index}']`);
+      const dropdown = document.querySelector(`.dropdown-menu[data-id='${orderId}']`);
       if (dropdown) {
         dropdown.style.top = `${rect.bottom + window.scrollY}px`;
         dropdown.style.left = `${rect.left}px`;
@@ -72,14 +85,15 @@ const viewOrderDetails = async (orderId) => {
     }
   };
 
-  const toggleStatusDropdown = (index, event) => {
+  const toggleStatusDropdown = (orderId, event) => {
     event.stopPropagation();
-    setStatusDropdownVisible(statusDropdownVisible === index ? null : index);
-    setSelectedOrder(orders[index]);
+    setStatusDropdownVisible(statusDropdownVisible === orderId ? null : orderId);
+    const selected = orders.find(order => order.pedidoID === orderId);
+    setSelectedOrder(selected);
 
-    if (statusDropdownVisible !== index && event) {
+    if (statusDropdownVisible !== orderId && event) {
       const rect = event.target.getBoundingClientRect();
-      const statusDropdown = document.querySelector(`.status-dropdown[data-index='${index}']`);
+      const statusDropdown = document.querySelector(`.status-dropdown[data-id='${orderId}']`);
       if (statusDropdown) {
         statusDropdown.style.top = `${rect.bottom + window.scrollY}px`;
         statusDropdown.style.left = `${rect.left}px`;
@@ -87,32 +101,33 @@ const viewOrderDetails = async (orderId) => {
     }
   };
 
-  const renderStatusDropdown = (index) => (
-    statusDropdownVisible === index && (
-      <div className="status-dropdown" data-index={index}>
+  const renderStatusDropdown = (orderId) => (
+    statusDropdownVisible === orderId && (
+      <div ref={statusDropdownRef} className="status-dropdown" data-id={orderId}>
         <button onClick={() => handleStatusChange('entregado')}>Entregado</button>
         <button onClick={() => handleStatusChange('anulado')}>Anulado</button>
+        <button onClick={() => handleStatusChange('pendiente')}>Pendiente</button>
       </div>
     )
   );
 
-  const renderDropdown = (index) => (
-    dropdownVisible === index && (
-      <div className="dropdown-menu" data-index={index}>
-        <button onClick={() => viewOrderDetails(orders[index].pedidoID)}>Ver orden</button>
-        <button onClick={(event) => toggleStatusDropdown(index, event)}>Cambiar estado</button>
-        {renderStatusDropdown(index)}
+  const renderDropdown = (orderId) => (
+    dropdownVisible === orderId && (
+      <div ref={actionDropdownRef} className="dropdown-menu" data-id={orderId}>
+        <button onClick={() => viewOrderDetails(orderId)}>Ver orden</button>
+        <button onClick={(event) => toggleStatusDropdown(orderId, event)}>Cambiar estado</button>
+        {renderStatusDropdown(orderId)}
       </div>
     )
   );
 
-  const fetchOrders = async (query) => {
+  const fetchOrders = async () => {
     setLoading(true);
     try {
       const response = await fetch(`${backendUrl}/api/viewOrders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...query, estado }),
+        body: JSON.stringify({ estado }),
       });
       const data = await response.json();
       console.log('Pedidos recibidos:', data);
@@ -139,7 +154,12 @@ const viewOrderDetails = async (orderId) => {
           }),
         });
         if (response.ok) {
-          alert('Estado del pedido actualizado exitosamente');
+          setCallout({
+            show: true,
+            title: 'Éxito',
+            message: 'Estado del pedido actualizado exitosamente',
+            styleClass: 'callout-success', // Clase para éxito
+          });
           setOrders((prevOrders) =>
             prevOrders.map((order) =>
               order.pedidoID === selectedOrder.pedidoID
@@ -147,35 +167,74 @@ const viewOrderDetails = async (orderId) => {
                 : order
             )
           );
-          setStatusDropdownVisible(null);
         } else {
-          alert('Error al actualizar el estado del pedido');
+          setCallout({
+            show: true,
+            title: 'Error',
+            message: 'Error al actualizar el estado del pedido',
+            styleClass: 'callout-error', // Clase para error
+          });
         }
       } catch (error) {
         console.error('Error al actualizar el estado del pedido:', error);
-        alert('Hubo un error al actualizar el estado del pedido');
+        setCallout({
+          show: true,
+          title: 'Error',
+          message: 'Hubo un error al actualizar el estado del pedido',
+          styleClass: 'callout-error', // Clase para error
+        });
       }
+      setStatusDropdownVisible(null); // Cierra el menú desplegable después de cambiar el estado.
+      setDropdownVisible(null); // Cierra cualquier otro menú desplegable abierto.
+      setTimeout(() => {
+        setCallout({ show: false, title: '', message: '', styleClass: '' });
+      }, 3000); // Oculta el Callout después de 3 segundos
     }
   };
+  
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    fetchOrders(searchQuery);
-  };
+  // Aplicar filtros
+  const filteredOrders = orders
+    .filter((order) =>
+      statusFilter === '' || order.estado.toLowerCase() === statusFilter.toLowerCase()
+    )
+    .sort((a, b) => {
+      if (orderSort === 'asc') {
+        return a.pedidoID - b.pedidoID;
+      } else if (orderSort === 'desc') {
+        return b.pedidoID - a.pedidoID;
+      } else if (dateSort === 'asc') {
+        return new Date(a.fechaPedido) - new Date(b.fechaPedido);
+      } else if (dateSort === 'desc') {
+        return new Date(b.fechaPedido) - new Date(a.fechaPedido);
+      }
+      return 0;
+    });
 
   return (
     <div className="orders-table-container">
       <h2>Órdenes</h2>
       <p>Ventas recientes de tu tienda.</p>
 
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Búsqueda..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button onClick={handleSearch}>Buscar</button>
+      <div className="filters">
+        <select onChange={(e) => setOrderSort(e.target.value)}>
+          <option value="">Ordenar por ID</option>
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
+        </select>
+
+        <select onChange={(e) => setStatusFilter(e.target.value)}>
+          <option value="">Filtrar por estado</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="entregado">Entregado</option>
+          <option value="anulado">Anulado</option>
+        </select>
+
+        <select onChange={(e) => setDateSort(e.target.value)}>
+          <option value="">Ordenar por fecha</option>
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
+        </select>
       </div>
 
       {loading ? (
@@ -194,25 +253,32 @@ const viewOrderDetails = async (orderId) => {
           </TableHead>
 
           <TableBody>
-            {orders.map((order, index) => (
-              <TableRow key={`${order.pedidoID}-${order.pedidoProductoID}`}>
+            {filteredOrders.map((order) => (
+              <TableRow key={order.pedidoID}>
                 <TableCell>{`#${order.pedidoID}`}</TableCell>
                 <TableCell>{`Usuario ${order.usuarioID}`}</TableCell>
                 <TableCell>
-                  <span className={`status ${order.estado === 'Entregado' ? 'delivered' : 'pending'}`}>
+                  <span className={`status ${order.estado}`}>
                     {order.estado}
                   </span>
                 </TableCell>
                 <TableCell>{order.fechaPedido}</TableCell>
                 <TableCell>{`$${order.total}`}</TableCell>
                 <TableCell>
-                  <div className="actions" onClick={(event) => toggleDropdown(index, event)}>↔</div>
-                  {renderDropdown(index)}
+                  <div className="actions" onClick={(event) => toggleDropdown(order.pedidoID, event)}>↔</div>
+                  {renderDropdown(order.pedidoID)}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+      )}
+
+      {callout.show && (
+        <div className={`fixed-callout ${callout.styleClass}`}>
+          <div className="callout-title">{callout.title}</div>
+          <div className="callout-message">{callout.message}</div>
+        </div>
       )}
 
       {showOrderDetails && selectedOrder && (

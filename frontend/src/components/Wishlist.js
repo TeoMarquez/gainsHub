@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './styles/WishList.css';
 
@@ -42,21 +42,48 @@ const Wishlist = ({ addToCart }) => {
 
   const handleAddToCart = (item) => {
     if (typeof addToCart === 'function') {
-      // Asegúrate de que el objeto que envías tiene las propiedades necesarias
       const product = {
         id: item.productoID,
         name: item.productoDescripcion,
         imageUrl: `${backendUrl}/uploads/${item.img}`,
         price: item.price,
-        quantity: 1, // Inicializa la cantidad en 1
+        quantity: 1,
       };
 
-      addToCart(product); // Pasa el producto con la estructura correcta al carrito
-      navigate('/cart');  // Redirigir al carrito después de agregar
+      addToCart(product);
+      navigate('/cart');
     } else {
       console.error("addToCart is not a function");
     }
   };
+
+  const handleRemoveFromWishlist = async (productoID) => {
+    const usuarioID = sessionStorage.getItem('userId');
+    if (!usuarioID) {
+        console.error('Usuario no autenticado');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${backendUrl}/api/removeProductFromWishlist`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ usuarioID, productoID }),
+        });
+
+        if (response.ok) {
+            setWishlistItems(prevItems => prevItems.filter(item => item.productoID !== productoID));
+            console.log('Producto removido de la lista de deseos');
+        } else {
+            const errorData = await response.json();
+            console.error('Error al remover el producto:', errorData.message);
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+    }
+};
 
   return (
     <div className="wishlist">
@@ -70,18 +97,25 @@ const Wishlist = ({ addToCart }) => {
             />
             <div className="wishlist-item-details">
               <h2>{item.productoDescripcion}</h2>
+              <p>{item.categoryName}</p>
               <div className="wishlist-item-price">${item.price}</div>
-              <div className="wishlist-item-buttons">
-                <Link to={`/productos/${item.categoryName}/${item.productoID}`}>
-                  <button className="wishlist-item-button">Ver más</button>
-                </Link>
-                <button
-                  className="wishlist-item-button carrito-button"
-                  onClick={() => handleAddToCart(item)}
-                >
-                  Añadir al Carrito
-                </button>
-              </div>
+            </div>
+            <div className="wishlist-item-buttons">
+              <Link to={`/productos/${item.categoryName}/${item.productoID}`}>
+                <button className="wishlist-item-button">Ver más</button>
+              </Link>
+              <button
+                className="wishlist-item-button carrito-button"
+                onClick={() => handleAddToCart(item)}
+              >
+                Añadir al Carrito
+              </button>
+              <button
+                className="wishlist-item-button remove-button"
+                onClick={() => handleRemoveFromWishlist(item.productoID)}
+              >
+                Remover
+              </button>
             </div>
           </div>
         ))
@@ -92,4 +126,4 @@ const Wishlist = ({ addToCart }) => {
   );
 };
 
-export default Wishlist;
+export default memo(Wishlist);

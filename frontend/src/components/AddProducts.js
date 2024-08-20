@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './styles/AddProducts.css';
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const AddProducts = () => {
@@ -12,12 +13,13 @@ const AddProducts = () => {
     const [talle, setTalle] = useState('');
     const [color, setColor] = useState('');
     const [coleccionID, setColeccionID] = useState('');
-    const [lo_mejor, setLoMejor] = useState('No'); // Default value
-    const [novedad, setNovedad] = useState('No'); // Default value
+    const [lo_mejor, setLoMejor] = useState('No'); 
+    const [novedad, setNovedad] = useState('No'); 
     const [imagenFile, setImagenFile] = useState(null);
-    const [imagePreview, setImagePreview] = useState(''); // State for image preview
+    const [imagePreview, setImagePreview] = useState(''); 
     const [categorias, setCategorias] = useState([]);
     const [colecciones, setColecciones] = useState([]);
+    const [callout, setCallout] = useState({ show: false, title: '', message: '', styleClass: '' });
 
     useEffect(() => {
         const fetchCategorias = async () => {
@@ -116,17 +118,32 @@ const AddProducts = () => {
       
             const result = await response.json();
             console.log('Producto añadido:', result);
-            alert('Producto añadido con exito')
+            setCallout({
+                show: true,
+                title: 'Éxito',
+                message: 'Producto añadido con éxito.',
+                styleClass: 'callout-success',
+            });
         } catch (error) {
             console.error('Error al añadir el producto:', error);
+            setCallout({
+                show: true,
+                title: 'Error',
+                message: 'Hubo un error al añadir el producto.',
+                styleClass: 'callout-error',
+            });
         }
+
+        setTimeout(() => {
+            setCallout({ show: false, title: '', message: '', styleClass: '' });
+        }, 3000); 
     };
 
     const handleImageChange = (e) => {
         if (e.target.files.length > 0) {
             const file = e.target.files[0];
             setImagenFile(file);
-            setImagePreview(URL.createObjectURL(file)); // Create a preview URL
+            setImagePreview(URL.createObjectURL(file)); 
         } else {
             setImagenFile(null);
             setImagePreview('');
@@ -135,32 +152,37 @@ const AddProducts = () => {
 
     return (
         <div className="container">
-            <h2 className="header">Productos</h2>
-            <p className="subHeader">Gestiona tu catálogo de productos.</p>
+            <h2 className="header">Añadir Producto</h2>
+            <p className="subHeader">Rellena los campos para añadir un nuevo producto.</p>
             <form className="formContainer" onSubmit={handleSubmit}>
-                <div className="imageContainer">
-                    <input 
-                        type="file" 
-                        name="imagen" 
-                        className="imageInput" 
-                        onChange={handleImageChange}
-                    />
-                    {imagePreview && (
-                       <div style={{ marginTop: '10px' }}>
-                       <img
-                           src={imagePreview}
-                           alt="Vista previa"
-                           style={{
-                               maxWidth: '150px',
-                               maxHeight: '150px',
-                               objectFit: 'cover',
-                               border: '1px solid #ddd',
-                               borderRadius: '5px',
-                           }}
-                       />
-                        </div>
-                    )}
-                </div>
+            <div className="imageContainer">
+                <label className="imageLabel">Agrega una imagen del producto</label>
+                <input 
+                    type="file" 
+                    name="imagen" 
+                    className="imageInput" 
+                    onChange={handleImageChange}
+                    required 
+                />
+                {imagePreview ? (
+                    <div style={{ marginTop: '10px' }}>
+                        <img
+                            src={imagePreview}
+                            alt="Vista previa"
+                            style={{
+                                maxWidth: '150px',
+                                maxHeight: '150px',
+                                objectFit: 'cover',
+                                border: '1px solid #ddd',
+                                borderRadius: '5px',
+                            }}
+                        />
+                    </div>
+                ) : (
+                    <div className="imagePlaceholder"></div>
+                )}
+            </div>
+
                 <div className="form">
                     <div className="inputGroup">
                         <label>ID del producto</label>
@@ -229,6 +251,13 @@ const AddProducts = () => {
                     <button type="submit" className="button">Añadir Producto</button>
                 </div>
             </form>
+
+            {callout.show && (
+                <div className={`fixed-callout ${callout.styleClass}`}>
+                    <div className="callout-title">{callout.title}</div>
+                    <div className="callout-message">{callout.message}</div>
+                </div>
+            )}
         </div>
     );
 };

@@ -18,10 +18,10 @@ const EditProduct = ({ product, onClose }) => {
     const [imagePreview, setImagePreview] = useState('');
     const [categorias, setCategorias] = useState([]);
     const [colecciones, setColecciones] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); // Añadido: Estado para manejar la carga
+    const [callout, setCallout] = useState({ show: false, title: '', message: '', styleClass: '' }); // Añadido: Estado para el callout
 
     useEffect(() => {
-        // Initialize the form fields with product data when product prop changes
         if (product) {
             setProductoID(String(product.productoID) || '');
             setDescripcion(product.descripcion || '');
@@ -39,7 +39,6 @@ const EditProduct = ({ product, onClose }) => {
     }, [product]);
 
     useEffect(() => {
-        console.log(product);  // <-- Verificar los valores de product
         const fetchCategorias = async () => {
             try {
                 const response = await fetch(`${backendUrl}/api/viewAllCategorias`);
@@ -115,7 +114,7 @@ const EditProduct = ({ product, onClose }) => {
             setImagePreview('');
         }
     };
-    
+
     const handleSave = async () => {
         const productoIDString = String(productoID).trim();
         const descripcionString = descripcion.trim();
@@ -128,51 +127,57 @@ const EditProduct = ({ product, onClose }) => {
         const coleccionIDString = String(coleccionID).trim();
         const lo_mejorNumber = lo_mejor === 'Sí' ? 1 : 0;
         const novedadNumber = novedad === 'Sí' ? 1 : 0;
-    
+
         if (!productoIDString) {
             alert('El ID del producto es requerido');
             return;
         }
-    
+
         if (!descripcionString || !masinfoString || !precioUnitarioString || !stockString || !categoriaIDString || !talleString || !colorString || !coleccionIDString) {
             alert('Todos los campos son requeridos');
             return;
         }
-    
+
         if (window.confirm('¿Estás seguro de que deseas guardar los cambios?')) {
             setIsLoading(true);
-    
-            const params = new URLSearchParams();
-            params.append('productoID', productoIDString);
-            params.append('descripcion', descripcionString);
-            params.append('masinfo', masinfoString);
-            params.append('precioUnitario', precioUnitarioString);
-            params.append('stock', stockString);
-            params.append('categoriaID', categoriaIDString);
-            params.append('talle', talleString);
-            params.append('color', colorString);
-            params.append('coleccionID', coleccionIDString);
-            params.append('lo_mejor', lo_mejorNumber);
-            params.append('novedad', novedadNumber);
-    
+            const formData = new FormData();
+            formData.append('productoID', productoIDString);
+            formData.append('descripcion', descripcionString);
+            formData.append('masinfo', masinfoString);
+            formData.append('precioUnitario', precioUnitarioString);
+            formData.append('stock', stockString);
+            formData.append('categoriaID', categoriaIDString);
+            formData.append('talle', talleString);
+            formData.append('color', colorString);
+            formData.append('coleccionID', coleccionIDString);
+            formData.append('lo_mejor', lo_mejorNumber);
+            formData.append('novedad', novedadNumber);
+            if (imagenFile) {
+                formData.append('imagen', imagenFile);
+            }
             try {
                 const response = await fetch(`${backendUrl}/api/updateProduct`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: params.toString(),
+                    body: formData,
                 });
-    
+
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(`Error al editar el producto: ${errorData.message}`);
                 }
-    
-                const result = await response.json();
-                console.log('Producto editado:', result);
-                alert('Producto editado con éxito');
-                onClose(); // Cerrar el modal
+
+                setCallout({
+                    show: true,
+                    title: 'Éxito',
+                    message: 'Producto editado con éxito.',
+                    styleClass: 'callout-success',
+                });
+
+                setTimeout(() => {
+                    setCallout({ show: false, title: '', message: '', styleClass: '' });
+                    onClose(); // Cerrar el modal
+                }, 3000);
+
             } catch (error) {
                 console.error('Error al editar el producto:', error);
                 alert(`Hubo un error al editar el producto: ${error.message}`);
@@ -181,11 +186,18 @@ const EditProduct = ({ product, onClose }) => {
             }
         }
     };
-    
-    
+
     return (
         <div className="container">
             <h2 className="header">Editar Producto</h2>
+
+            {callout.show && (
+                <div className={`fixed-callout ${callout.styleClass}`}>
+                    <div className="callout-title">{callout.title}</div>
+                    <div className="callout-message">{callout.message}</div>
+                </div>
+            )}
+
             <form className="formContainer" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
                 <div className="imageContainer">
                     <input 
