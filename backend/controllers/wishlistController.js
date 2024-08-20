@@ -88,77 +88,59 @@ db.query(getProductIDQuery, [descripcion], (err, results) => {
 };
 
 const removeProductFromWishlist = (req, res) => {
-    const { usuarioID, descripcion, marca, talle } = req.body;
+  const { usuarioID, productoID } = req.body;
 
-    if (!usuarioID) {
-        return res.status(400).json({ message: 'El ID del usuario es requerido' });
+  if (!usuarioID || !productoID) {
+    return res.status(400).json({ message: 'UsuarioID y productoID son requeridos' });
+  }
+
+  // Obtener wishlistID del usuario
+  const getWishlistIDQuery = 'SELECT wishlistID FROM Wishlist WHERE usuarioID = ?';
+  db.query(getWishlistIDQuery, [usuarioID], (err, results) => {
+    if (err) {
+      console.error('Error al buscar la wishlist del usuario:', err);
+      return res.status(500).json({ message: 'Error al eliminar el producto de la wishlist' });
     }
 
-    // Paso 1: Obtener el wishlistID del usuario
-    const getWishlistIDQuery = 'SELECT wishlistID FROM Wishlist WHERE usuarioID = ?';
-    db.query(getWishlistIDQuery, [usuarioID], (err, results) => {
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Wishlist no encontrada para el usuario' });
+    }
+
+    const wishlistID = results[0].wishlistID;
+
+    // Verificar si el producto está en la wishlist antes de intentar eliminarlo
+    const checkProductQuery = 'SELECT * FROM WishlistProductos WHERE wishlistID = ? AND productoID = ?';
+    db.query(checkProductQuery, [wishlistID, productoID], (err, results) => {
+      if (err) {
+        console.error('Error al verificar el producto en la wishlist:', err);
+        return res.status(500).json({ message: 'Error al verificar el producto en la wishlist' });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'Producto no encontrado en la wishlist' });
+      }
+
+      // Eliminar el producto de la wishlist usando wishlistID y productoID
+      const deleteQuery = `
+        DELETE FROM WishlistProductos
+        WHERE wishlistID = ? AND productoID = ?
+      `;
+
+      db.query(deleteQuery, [wishlistID, productoID], (err, results) => {
         if (err) {
-            console.error('Error al buscar la wishlist del usuario:', err);
-            return res.status(500).json({ message: 'Error al eliminar el producto de la wishlist' });
+          console.error('Error al eliminar el producto de la wishlist:', err);
+          return res.status(500).json({ message: 'Error al eliminar el producto de la wishlist' });
         }
 
-        if (results.length === 0) {
-            return res.status(404).json({ message: 'Wishlist no encontrada para el usuario' });
+        if (results.affectedRows === 0) {
+          return res.status(404).json({ message: 'Producto no encontrado en la wishlist' });
         }
 
-        const wishlistID = results[0].wishlistID;
-
-        // Paso 2: Obtener el productoID basado en la descripción, marca, y talle
-        let getProductIDQuery = 'SELECT productoID FROM Productos WHERE 1=1';
-        const queryParams = [];
-
-        if (descripcion) {
-            getProductIDQuery += ' AND descripcion = ?';
-            queryParams.push(descripcion);
-        }
-        if (marca) {
-            getProductIDQuery += ' AND marca = ?';
-            queryParams.push(marca);
-        }
-        if (talle) {
-            getProductIDQuery += ' AND talle = ?';
-            queryParams.push(talle);
-        }
-
-        db.query(getProductIDQuery, queryParams, (err, results) => {
-            if (err) {
-                console.error('Error al buscar el producto:', err);
-                return res.status(500).json({ message: 'Error al eliminar el producto de la wishlist' });
-            }
-
-            if (results.length === 0) {
-                return res.status(404).json({ message: 'Producto no encontrado' });
-            }
-
-            const productoID = results[0].productoID;
-
-            // Paso 3: Eliminar el producto de la wishlist usando wishlistID
-            const deleteQuery = `
-                DELETE FROM WishlistProductos
-                WHERE wishlistID = ? AND productoID = ?
-            `;
-
-            db.query(deleteQuery, [wishlistID, productoID], (err, results) => {
-                if (err) {
-                    console.error('Error al eliminar el producto de la wishlist:', err);
-                    return res.status(500).json({ message: 'Error al eliminar el producto de la wishlist' });
-                }
-
-                if (results.affectedRows === 0) {
-                    return res.status(404).json({ message: 'Producto no encontrado en la wishlist' });
-                }
-
-                res.status(200).json({ message: 'Producto eliminado de la wishlist exitosamente' });
-            });
-        });
+        res.status(200).json({ message: 'Producto eliminado de la wishlist exitosamente' });
+      });
     });
+  });
 };
-
 
 const viewWishlist = (req, res) => {
     const { usuarioID } = req.body;
@@ -197,7 +179,5 @@ const viewWishlist = (req, res) => {
       res.status(200).json(results);
     });
   };
-  
-  
 
 module.exports = {addProductToWishlist,removeProductFromWishlist,viewWishlist}
