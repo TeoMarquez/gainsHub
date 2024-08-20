@@ -130,12 +130,12 @@ const updateProduct = (req, res) => {
     }
     if (lo_mejor !== undefined) {
       updateFields.push('lo_mejor = ?');
-      values.push(lo_mejor === 'Sí' ? 1 : 0);
+      values.push(lo_mejor);
     }
     if (novedad !== undefined) {
       updateFields.push('novedad = ?');
-      values.push(novedad === 'Sí' ? 1 : 0);
-    }
+      values.push(novedad);
+    }    
     if (masinfo) {
       updateFields.push('masinfo = ?');
       values.push(masinfo);
@@ -158,7 +158,7 @@ const updateProduct = (req, res) => {
         console.error('Error al actualizar en la base de datos:', err);
         return res.status(500).json({ message: 'Error al actualizar el producto' });
       }
-      res.status(200).json({ message: 'Producto actualizado exitosamente' });
+      res.status(200).json({ message: 'Producto actualizado exitosamente', data: req.body });
     });
   });
 };
