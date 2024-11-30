@@ -1,124 +1,75 @@
-.subcategory-section {
-  margin-bottom: 40px;
+.order-confirmation-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px 20px;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.product-grid {
-  display: flex;
-  overflow-x: auto;
-  gap: 20px;
-  scroll-behavior: smooth;
-  padding-bottom: 10px;
+.success-icon {
+  font-size: 50px;
+  color: #28a745;
   margin-bottom: 20px;
 }
 
-.product-grid::-webkit-scrollbar {
-  height: 12px;
-}
-
-.product-grid::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 6px;
-}
-
-.product-card {
-  flex: 0 0 auto;
-  width: 300px; /* Ancho fijo para las tarjetas de producto */
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
-.product-grid .product-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.product-card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-  text-align: left;
-}
-
-/* Estilo para el botón de añadir a deseos (icono del corazón) */
-.wishlist-icon-container {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.wishlist-button {
-  background: none;
-  border: none;
+h2 {
   font-size: 24px;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  color: #888;
-}
-
-.wishlist-button.in-wishlist {
-  color: red; /* Color rojo cuando el producto está en la lista de deseos */
-}
-
-.wishlist-button:hover {
-  transform: scale(1.2);
-}
-
-.product-grid .product-card h3 {
-  font-size: 18px;
   font-weight: bold;
-  margin: 10px 0 5px;
-}
-
-.product-grid .product-card p {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: #555;
-}
-
-.product-grid .product-card .product-category {
-  font-size: 12px;
-  color: #888;
   margin-bottom: 10px;
 }
 
-.product-grid .product-card .product-price {
-  font-size: 18px;
-  font-weight: bold;
-  color: #000;
-  margin: 10px 0;
+p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
 }
 
-.product-grid .product-card .add-to-cart {
-  padding: 8px 15px;
+.order-summary {
+  margin-top: 20px;
+}
+
+.order-summary h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.order-summary p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.order-summary .total {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
   background-color: #000;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-top: 20px;
-  text-align: center;
+  font-size: 16px;
 }
 
-.product-grid .product-card .add-to-cart:hover {
+button:hover {
   background-color: #444;
 }
+.product-grid {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los productos pasen a la siguiente fila si no caben en la misma */
+  gap: 10px; /* Espacio entre los productos */
+  justify-content: space-between; /* Distribuir el espacio entre los productos */
+}
 
-.product-grid .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.product-card {
+  flex: 1 1 300px; /* Cada tarjeta tendrá un ancho mínimo de 300px y se ajustará según el espacio disponible */
+  max-width: 300px; /* Limitar el ancho máximo */
 }

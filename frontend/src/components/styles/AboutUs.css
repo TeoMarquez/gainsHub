@@ -1,0 +1,45 @@
+.about-us {
+    padding: 20px 20px 20px 40px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.about-us h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.about-us p {
+    font-size: 1.2em;
+    color: #333;
+}
+
+.trayectoria, .dudas-frecuentes {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.trayectoria h3, .dudas-frecuentes h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.trayectoria p, .dudas-frecuentes p {
+    font-size: 1.1em;
+    color: #555;
+}
+
+.faq-item {
+    margin-bottom: 15px;
+}
+
+.faq-item h4 {
+    font-size: 1.4em;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.faq-item p {
+    font-size: 1.1em;
+    color: #555;
+}

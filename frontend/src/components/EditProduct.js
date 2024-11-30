@@ -207,15 +207,14 @@ const EditProduct = ({ product, onClose }) => {
                         onChange={handleImageChange}
                     />
                     {imagePreview && (
-                       <div style={{ marginTop: '10px' }}>
+                       <div style={{ marginTop: '15px' }}>
                        <img
                            src={imagePreview}
                            alt="Vista previa"
                            style={{
-                               maxWidth: '150px',
-                               maxHeight: '150px',
+                               maxWidth: '200px',
+                               maxHeight: '190px',
                                objectFit: 'cover',
-                               border: '1px solid #ddd',
                                borderRadius: '5px',
                            }}
                        />

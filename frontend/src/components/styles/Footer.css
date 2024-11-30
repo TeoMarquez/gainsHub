@@ -2,19 +2,19 @@
   background-color: #ffffff; /* Color del fondo del footer */
   color: #000000; /* Color del texto */
   padding: 20px;
-  
   position: static; /* O relative */
-  
 }
 
 .footer-content {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 20px; /* Añade un espacio entre las columnas */
 }
 
 .footer-column {
-  width: 20%;
+  flex: 1; /* Permite que las columnas tomen un tamaño flexible */
+  min-width: 200px; /* Asegura que las columnas tengan un ancho mínimo */
   margin-bottom: 20px;
 }
 

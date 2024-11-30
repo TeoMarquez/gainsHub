@@ -1,29 +1,87 @@
+.wishlist {
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.wishlist h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.wishlist-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.wishlist-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.wishlist-item-details {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.wishlist-item-details h2 {
+  font-size: 18px;
+  margin: 0;
+  color: #333;
+}
+
+.wishlist-item-details p {
+  color: #666;
+  margin: 5px 0;
+}
+
 .wishlist-item-buttons {
   display: flex;
-  gap: 12px; /* Aumentado ligeramente para mayor claridad entre los botones */
-  margin-top: 15px; /* Aumentado para una mejor separación del contenido */
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .wishlist-item-button {
-  padding: 10px 20px; /* Ligeramente aumentado para un mejor toque visual */
-  background-color: #000;
+  padding: 10px 20px;
+  background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-weight: bold;
-  text-transform: uppercase;
+  margin-top: 10px;
 }
 
 .wishlist-item-button:hover {
-  background-color: #444;
+  background-color: #0056b3;
 }
 
 .carrito-button {
-  background-color: #007bff; /* Azul para diferenciar el botón de carrito */
+  background-color: #28a745;
 }
 
 .carrito-button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
+}
+
+.wishlist-item-price {
+  font-size: 16px;
+  color: #666;
+  margin-top: 10px;
+}
+.wishlist-item-button.remove-button {
+  background-color: #ff4d4d; /* Rojo para el botón de remover */
+  color: #fff;
+}
+
+.wishlist-item-button.remove-button:hover {
+  background-color: #ff1a1a; /* Rojo más oscuro al hacer hover */
 }

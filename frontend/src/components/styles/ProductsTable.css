@@ -1,0 +1,155 @@
+.orders-table-container {
+    font-family: 'Kanit', sans-serif;
+    max-width: 100%;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #365073; /* Utiliza el color de la paleta */
+}
+  
+.orders-table-container h2 {
+    font-weight: 600;
+    color: #365073;
+    margin-bottom: 5px;
+}
+  
+.orders-table-container p {
+    font-weight: 300;
+    color: #666;
+    margin-bottom: 20px;
+}
+  
+.add-product {
+    background-color: #000;
+    color: #fff;
+    font-family: "Kanit", sans-serif;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: none;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+  
+.add-product:hover {
+    background-color: #696969;
+}
+  
+.orders-table-container .Table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+.orders-table-container th,
+.orders-table-container td {
+    padding: 12px 20px;
+    text-align: left;
+    color: #000;
+    border-bottom: 1px solid #ddd;
+}
+  
+.orders-table-container th {
+    background-color: #f4f4f4;
+    font-weight: 400;
+    color: #333;
+    text-transform: uppercase;
+    text-align: left;
+    font-size: 14px;
+}
+  
+.orders-table-container td {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+    vertical-align: middle; /* Centrado vertical */
+}
+  
+.orders-table-container .actions {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    vertical-align: middle;
+}
+  
+.actions:hover {
+    color: #000;
+    cursor: pointer;
+}
+  
+.actions {
+    position: relative;
+}
+  
+.dropdown-menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 8px;
+}
+  
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: "Kanit", sans-serif;
+    border-radius: 4px;
+}
+  
+.dropdown-menu button:hover {
+    background-color: #365073;
+    color: #fff;
+}
+  
+/* Estilo de la imagen */
+.orders-table-container img {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* Estilos del callout */
+.fixed-callout {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 300px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    font-family: 'Kanit', sans-serif;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+.callout-success {
+    background-color: #c1ffc6;
+    color: #339938;
+    border-left: 5px solid #00ff00;
+}
+
+.callout-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 5px solid #dc3545;
+}
+
+.callout-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.callout-message {
+    font-weight: 400;
+    font-size: 14px;
+    margin-bottom: 0;
+}

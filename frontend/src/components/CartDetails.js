@@ -99,14 +99,16 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
               {cartItems.map((item) => (
                 <tr key={item.id}>
                   <td>
-                    <img src={item.imageUrl} alt={item.name} style={{ width: '50px' }} />
+                    <img src={item.imageUrl} alt={item.name} style={{ width: '120px' }} />
                     {item.name}
                   </td>
                   <td>{formatPrice(item.price)}</td>
                   <td>
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</button>
-                    {item.quantity}
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} disabled={stock[item.id] === 0 || item.quantity >= stock[item.id]}>+</button>
+                    <div className="quantity-controls">
+                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</button>
+                      <span className="quantity-value">{item.quantity}</span>
+                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)} disabled={stock[item.id] === 0 || item.quantity >= stock[item.id]}>+</button>
+                    </div>
                   </td>
                   <td>{formatPrice(calculateSubtotal(item))}</td>
                   <td>
@@ -146,4 +148,3 @@ const CartDetails = ({ cartItems, updateItemQuantity, removeItem }) => {
 };
 
 export default CartDetails;
-

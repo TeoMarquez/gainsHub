@@ -1,40 +1,87 @@
-.product-details {
+.product-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    box-shadow: 0 4px 8px rgb(0, 0, 0);
+    max-width: 800px;
+    margin: 40px auto;
 }
 
-.imageContainer {
+.image-container {
     display: flex;
     justify-content: center;
-    align-items: center;
     margin-bottom: 20px;
 }
 
-.productImage {
-    max-width: 100%;
-    height: auto;
+.product-image {
+    width: 100%;
+    max-width: 250px;
+    height: 300px;
     border-radius: 8px;
+    object-fit: contain;
+    background-color: #f1f1f1;
 }
 
-.product-details h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #333;
+.details-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    justify-items: center; /* Centra los elementos horizontalmente */
 }
 
-.product-details p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #666;
+.section-box {
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    width: 100%; /* Asegura que todos los cuadros ocupen el ancho completo de la columna */
+    box-sizing: border-box;
+}
+
+/* Estilo específico para centrar el cuadro de Características */
+.centered {
+    grid-column: 1 / -1; /* Asegura que ocupe una fila completa en la cuadrícula */
+    width: 50%; /* Ajusta el ancho del cuadro para que no ocupe todo el espacio */
+    justify-self: center; /* Centra el cuadro en la fila */
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.custom-table th,
+.custom-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.custom-table th {
+    background-color: #f3f3f3;
+    font-weight: bold;
+}
+
+.custom-table td {
+    background-color: #fff;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .edit-button {
     padding: 10px 20px;
-    background-color: #000;
+    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -44,6 +91,6 @@
 }
 
 .edit-button:hover {
-    background-color: #333;
+    background-color: #0056b3;
     transform: scale(1.05);
 }

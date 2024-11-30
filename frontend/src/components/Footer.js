@@ -51,17 +51,10 @@ const Footer = () => {
         <div className="footer-column">
           <h4>ASISTENCIA</h4>
           <ul>
-          <li><Link to="/formas-de-pago">Pagos</Link></li>
             <li><a href="#" onClick={handleAdminClick}>Administrador</a></li> {/* Enlace a la página Admin con modal si no está logueado */}
           </ul>
         </div>
-        <div className="footer-column">
-          <h4>INFORMACIÓN DE LA EMPRESA</h4>
-          <ul>
-          <li><Link to="/about-us">Acerca de la tienda</Link></li>
-          </ul>
-        </div>
-        <div className="footer-column">
+               <div className="footer-column">
           <h4>SÍGUENOS</h4>
           <ul className="social-media">
             <li><a href="https://www.instagram.com/ecae_24/"><i className="fab fa-instagram"></i> Instagram</a></li>

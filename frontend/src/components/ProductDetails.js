@@ -4,13 +4,6 @@ import { useParams } from 'react-router-dom';
 import './styles/ProductDetails.css';
 import Modal from './Modal'; 
 import EditProduct from './EditProduct'; 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeaderCell,
-  TableRow,
-} from '@tremor/react';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -61,65 +54,29 @@ const ProductDetails = () => {
                 />
             </div>
             <div className="details-container">
-                <Table className="custom-table">
-                    <TableBody>
-                        <TableRow>
-                            <TableHeaderCell>ID</TableHeaderCell>
-                            <TableCell>{product.productoID}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Nombre</TableHeaderCell>
-                            <TableCell>{product.descripcion}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Más Información</TableHeaderCell>
-                            <TableCell>{product.masinfo || 'No disponible'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Precio</TableHeaderCell>
-                            <TableCell>${Number(product.precioUnitario).toFixed(2)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Categoría</TableHeaderCell>
-                            <TableCell>{product.categoriaNombre || 'No disponible'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Talle</TableHeaderCell>
-                            <TableCell>{product.talle || 'No disponible'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Color</TableHeaderCell>
-                            <TableCell>{product.color || 'No disponible'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Colección</TableHeaderCell>
-                            <TableCell>{product.coleccionNombre || 'No disponible'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Lo Mejor</TableHeaderCell>
-                            <TableCell>{product.lo_mejor ? 'Sí' : 'No'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Novedad</TableHeaderCell>
-                            <TableCell>{product.novedad ? 'Sí' : 'No'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Stock</TableHeaderCell>
-                            <TableCell>{product.stock}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Fecha de Creación</TableHeaderCell>
-                            <TableCell>{product.fechaCreacion ? new Date(product.fechaCreacion).toLocaleDateString() : 'No disponible'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderCell>Activo</TableHeaderCell>
-                            <TableCell>{product.activo ? 'Sí' : 'No'}</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-                <div className="button-container">
-                    <button className="edit-button" onClick={handleEditClick}>Editar</button>
+                <div className="section-box">
+                    <h3>Información del Producto</h3>
+                    <p><strong>ID:</strong> {product.productoID}</p>
+                    <p><strong>Nombre:</strong> {product.descripcion}</p>
+                    <p><strong>Precio:</strong> ${Number(product.precioUnitario).toFixed(2)}</p>
+                    <p><strong>Stock:</strong> {product.stock}</p>
                 </div>
+                <div className="section-box">
+                    <h3>Detalles Adicionales</h3>
+                    <p><strong>Categoría:</strong> {product.categoriaNombre || 'No disponible'}</p>
+                    <p><strong>Talle:</strong> {product.talle || 'No disponible'}</p>
+                    <p><strong>Color:</strong> {product.color || 'No disponible'}</p>
+                    <p><strong>Colección:</strong> {product.coleccionNombre || 'No disponible'}</p>
+                </div>
+                <div className="section-box centered">
+                    <h3>Características</h3>
+                    <p><strong>Lo Mejor:</strong> {product.lo_mejor ? 'Sí' : 'No'}</p>
+                    <p><strong>Novedad:</strong> {product.novedad ? 'Sí' : 'No'}</p>
+                    <p><strong>Activo:</strong> {product.activo ? 'Sí' : 'No'}</p>
+                </div>
+            </div>
+            <div className="button-container">
+                <button className="edit-button" onClick={handleEditClick}>Editar</button>
             </div>
 
             {isModalOpen && (

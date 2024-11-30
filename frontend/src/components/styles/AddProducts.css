@@ -7,7 +7,7 @@
     color: #000;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: "Kanit";
+    font-family: "Kanit", sans-serif;
 }
 
 .header {
@@ -28,17 +28,22 @@
     gap: 20px;
 }
 
+/* Contenedor de la imagen */
 .imageContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    background-color: #f0f0f0;
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    color: #999;
-    font-size: 18px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #ccc;
+    padding: 20px;
+    background-color: #f7f7f7;
+    transition: all 0.3s ease;
+}
+
+/* Oculta el texto cuando hay una imagen cargada */
+.imageContainer.withImage .imageLabel {
+    display: none;
 }
 
 .imageInput {
@@ -47,6 +52,19 @@
     height: 100%;
     opacity: 0;
     cursor: pointer;
+}
+
+.imagePreviewContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.imagePreview {
+    max-width: 150px;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 .form {
@@ -88,10 +106,52 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
-    font-family: "Kanit";
+    font-family: "Kanit", sans-serif;
+    margin-bottom: 20px; /* Añadir margen inferior */
 }
 
 .button:hover {
     background-color: #333;
     transform: scale(1.05);
+}
+
+/* Estilo adicional para el botón de regresar */
+.button-back {
+    padding: 8px 15px;
+    background-color: #365073;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-family: "Kanit", sans-serif;
+}
+
+.button-back:hover {
+    background-color: #2c4963;
+    transform: scale(1.05);
+}
+
+/* Estilo para el callout */
+.fixed-callout {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #c9f77f; /* Color de fondo similar al de la imagen */
+    color: #333; /* Color del texto para mejor contraste */
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.callout-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.callout-message {
+    margin: 0;
 }

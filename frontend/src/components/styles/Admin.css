@@ -122,4 +122,21 @@
   .dropdown-menu button:hover {
     background-color: #f0f0f0;
   }
+  .top-bar {
+    padding: 5px;
+    background-color: #f4f4f4; /* Fondo suave */
+    border-bottom: 1px solid #eaeaea; /* Línea separadora */
+    margin-left: 25px; /* Alinea el título con el contenido, dejando espacio para el sidebar */
+    display: flex;
+    align-items: center;
+}
+
+.top-bar h2 {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: #2c3e50; /* Color acorde a la paleta */
+    margin: 0; /* Elimina margen para mejor alineación */
+}
+
   

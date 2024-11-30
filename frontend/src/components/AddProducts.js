@@ -13,10 +13,10 @@ const AddProducts = () => {
     const [talle, setTalle] = useState('');
     const [color, setColor] = useState('');
     const [coleccionID, setColeccionID] = useState('');
-    const [lo_mejor, setLoMejor] = useState('No'); 
-    const [novedad, setNovedad] = useState('No'); 
+    const [lo_mejor, setLoMejor] = useState('No');
+    const [novedad, setNovedad] = useState('No');
     const [imagenFile, setImagenFile] = useState(null);
-    const [imagePreview, setImagePreview] = useState(''); 
+    const [imagePreview, setImagePreview] = useState('');
     const [categorias, setCategorias] = useState([]);
     const [colecciones, setColecciones] = useState([]);
     const [callout, setCallout] = useState({ show: false, title: '', message: '', styleClass: '' });
@@ -136,14 +136,14 @@ const AddProducts = () => {
 
         setTimeout(() => {
             setCallout({ show: false, title: '', message: '', styleClass: '' });
-        }, 3000); 
+        }, 3000);
     };
 
     const handleImageChange = (e) => {
         if (e.target.files.length > 0) {
             const file = e.target.files[0];
             setImagenFile(file);
-            setImagePreview(URL.createObjectURL(file)); 
+            setImagePreview(URL.createObjectURL(file));
         } else {
             setImagenFile(null);
             setImagePreview('');
@@ -155,33 +155,23 @@ const AddProducts = () => {
             <h2 className="header">Añadir Producto</h2>
             <p className="subHeader">Rellena los campos para añadir un nuevo producto.</p>
             <form className="formContainer" onSubmit={handleSubmit}>
-            <div className="imageContainer">
-                <label className="imageLabel">Agrega una imagen del producto</label>
-                <input 
-                    type="file" 
-                    name="imagen" 
-                    className="imageInput" 
-                    onChange={handleImageChange}
-                    required 
-                />
-                {imagePreview ? (
-                    <div style={{ marginTop: '10px' }}>
-                        <img
-                            src={imagePreview}
-                            alt="Vista previa"
-                            style={{
-                                maxWidth: '150px',
-                                maxHeight: '150px',
-                                objectFit: 'cover',
-                                border: '1px solid #ddd',
-                                borderRadius: '5px',
-                            }}
-                        />
-                    </div>
-                ) : (
-                    <div className="imagePlaceholder"></div>
-                )}
-            </div>
+                <div className={`imageContainer ${imagePreview ? 'withImage' : ''}`}>
+                    {!imagePreview && <label className="imageLabel">Agrega una imagen del producto</label>}
+                    <input 
+                        type="file" 
+                        name="imagen" 
+                        className="imageInput" 
+                        onChange={handleImageChange}
+                        required 
+                    />
+                    {imagePreview ? (
+                        <div className="imagePreviewContainer">
+                            <img src={imagePreview} alt="Vista previa" className="imagePreview" />
+                        </div>
+                    ) : (
+                        <div className="imagePlaceholder"></div>
+                    )}
+                </div>
 
                 <div className="form">
                     <div className="inputGroup">

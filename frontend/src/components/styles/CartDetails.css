@@ -1,0 +1,163 @@
+.cart-details {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto; /* Agrega margen superior e inferior para separar del header y footer */
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgb(0, 0, 0);
+  border-radius: 8px;
+}
+
+.cart-details h1 {
+  font-size: 32px; /* Aumenta el tamaño del encabezado */
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cart-details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.cart-details table th,
+.cart-details table td {
+  padding: 15px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #000000;
+  font-size: 18px; /* Aumenta el tamaño de fuente de las celdas */
+}
+
+.cart-details table th {
+  font-weight: bold;
+}
+
+.cart-details table td img {
+  width: 60px; /* Aumenta el tamaño de la imagen */
+  height: auto;
+  margin-right: 20px;
+  vertical-align: middle;
+  border-radius: 5px;
+}
+
+.cart-details table td button {
+  background-color: #000000;
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px; /* Aumenta el tamaño de los botones */
+  transition: background-color 0.3s ease;
+  margin: 0 5px;
+}
+
+.cart-details table td button:hover {
+  background-color: #000000;
+}
+
+.cart-details table .quantity-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.cart-details table .quantity-buttons button {
+  font-size: 12px; /* Aumenta el tamaño de los botones de cantidad */
+  width: 30px;
+  height: 30px;
+}
+
+.cart-details table .quantity-buttons span {
+  font-size: 20px; /* Aumenta el tamaño del número de cantidad */
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.cart-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.cart-actions a {
+  color: #1b9a94;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.cart-actions a:hover {
+  text-decoration: underline;
+}
+
+.cart-actions h2 {
+  font-size: 24px; /* Aumenta el tamaño del total */
+  font-weight: bold;
+}
+
+.cart-actions .payment-button {
+  margin-right: auto;
+  padding-right: 20px;
+}
+
+.cart-actions button {
+  padding: 12px 20px; /* Ajusta el padding del botón */
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 18px; /* Aumenta el tamaño de fuente del botón */
+}
+
+.cart-actions button:hover {
+  background-color: #000000;
+}
+
+.warning-text {
+  color: red;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.error-text {
+  color: #d9534f; /* Color de advertencia */
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; /* Espacio entre botones y número */
+}
+
+.quantity-controls button {
+  font-size: 15px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.quantity-controls button:hover {
+  background-color: #555;
+}
+
+.quantity-value {
+  font-size: 24px;
+}

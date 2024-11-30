@@ -1,36 +1,48 @@
 .sidebar {
-    width: 230px;
-    background-color: #f4f4f4;
+    width: 250px;
+    background-color: #365073;
     padding: 20px;
     height: 100vh;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    color: black;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    position: fixed;
 }
-  
+
+.adminItem {
+    font-weight: bold;
+    font-size: 23px;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #E6DFD7;
+}
+
 .item {
     display: flex;
     align-items: center;
     padding: 10px 0;
     cursor: pointer;
-}
-  
-.adminItem {
-    font-weight: bold;
-    font-size: 23px;
-    margin-bottom: 20px;
-}
-  
-.icon {
-    margin-right: 10px;
-}
-  
-.item-link {
-    text-decoration: none;
-    color: black;
-    display: flex;
-    align-items: center;
+    transition: background-color 0.3s ease;
 }
 
-.item-link:hover {
-    color: #007bff; /* Cambia el color al pasar el ratón */
+.icon {
+    margin-right: 15px;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.item-link {
+    text-decoration: none;
+    color: #F4F5F0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilo para el elemento en hover */
+.item-link:hover,
+.item.active .item-link {
+    background-color: #414a59;
+    border-radius: 8px;
+    padding: 10px;
+    color: #ffffff;
 }

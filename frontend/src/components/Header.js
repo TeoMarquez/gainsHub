@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import user from '../assets/images/User.jpg';
-import heart from '../assets/images/heartr.png';
-import shopping from '../assets/images/shopping.svg';
+import user from '../assets/images/user.png';
+import heart from '../assets/images/heartt.png';
+import shopping from '../assets/images/bag.png';
 import './styles/Header.css';
 import Modal from './Modal';
 import Login from './Login';

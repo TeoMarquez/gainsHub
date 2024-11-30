@@ -1,6 +1,6 @@
 .edit-product {
     padding: 20px;
-    background-color: #fff;
+    background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -22,13 +22,13 @@
 .inputGroup label {
     margin-bottom: 5px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
 }
 
 .inputGroup input,
 .inputGroup textarea {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 4px;
     font-size: 16px;
     transition: border-color 0.3s;
@@ -39,19 +39,67 @@
     border-color: #000;
     outline: none;
 }
+.buttonGroup {
+    display: flex;
+    justify-content: space-between; /* Distribuye los botones a ambos extremos */
+    gap: 10px; /* Añade un espacio entre los botones */
+    margin-top: 20px; /* Añade un margen superior */
+}
 
-.save-button {
+.buttonCancel {
     padding: 10px 20px;
-    background-color: #000;
+    background-color: #d9534f; /* Rojo para el botón de cancelar */
     color: #fff;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    flex: 1; /* Hace que ambos botones tengan el mismo tamaño */
 }
 
-.save-button:hover {
-    background-color: #333;
+.buttonCancel:hover {
+    background-color: #c9302c; /* Un tono más oscuro en hover */
     transform: scale(1.05);
+}
+
+.buttonSave {
+    padding: 10px 20px;
+    background-color: #5cb85c; /* Verde para el botón de guardar */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    flex: 1; /* Hace que ambos botones tengan el mismo tamaño */
+}
+
+.buttonSave:hover {
+    background-color: #4cae4c; /* Un tono más oscuro en hover */
+    transform: scale(1.05);
+}
+.fixed-callout {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.callout-success {
+    background-color: #a0fcb6;
+    color: #155724;
+    border-left: 6px solid #28a745;
+}
+
+.callout-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.callout-message {
+    margin: 0;
 }
